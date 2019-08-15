@@ -7,7 +7,6 @@ import queryString from 'query-string';
 import { fetchUser } from '../actions/auth';
 class Landing extends Component {
   componentDidMount() {
-    console.log(this.props);
     const parsed = queryString.parse(window.location.search);
     const { user } = parsed;
 

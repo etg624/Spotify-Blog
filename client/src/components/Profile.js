@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { refreshAccessToken } from '../actions/auth';
+import { fetchUserPlaylists } from '../actions/user';
 import { API_BASE_URL, SPOTIFY_BASE_URL } from '../config';
 
 class Profile extends Component {
@@ -12,22 +13,17 @@ class Profile extends Component {
     if (currentUser) {
       const { dispatch } = this.props;
       const { spotifyId } = this.props.currentUser;
-      return dispatch(refreshAccessToken(spotifyId));
+      dispatch(
+        fetchUserPlaylists(spotifyId, localStorage.getItem('accessToken')) //prev props seems to be an updated access token
+      );
     }
   }
 
   componentWillUpdate(prevProps) {
-    const { currentUser } = this.props;
+    const { currentUser, dispatch } = this.props;
     const { accessToken, spotifyId } = currentUser;
 
     if (prevProps.currentUser.accessToken !== accessToken) {
-      return fetch(`${SPOTIFY_BASE_URL}/users/${spotifyId}/playlists`, {
-        headers: {
-          Authorization: `Bearer ${prevProps.currentUser.accessToken}`
-        }
-      })
-        .then(res => res.json())
-        .then(playlists => console.log(playlists));
     }
   }
 

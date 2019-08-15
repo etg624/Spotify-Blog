@@ -13,6 +13,10 @@ export const refreshAccessTokenSuccess = accessToken => ({
   accessToken
 });
 
+const setAccessTokenInLocalStorage = (accessToken, dispatch) => {
+  dispatch(localStorage.setItem('accessToken', accessToken));
+};
+
 export const fetchUser = user => (dispatch, getState) => {
   dispatch(fetchUserRequest());
   return fetch(`${API_BASE_URL}/user/${user}`)
@@ -23,7 +27,8 @@ export const fetchUser = user => (dispatch, getState) => {
 export const refreshAccessToken = spotifyId => (dispatch, getState) => {
   fetch(`${API_BASE_URL}/user/${spotifyId}/refresh`, {})
     .then(res => res.json())
-    .then(({ accessToken }) =>
-      dispatch(refreshAccessTokenSuccess(accessToken))
-    );
+    .then(({ accessToken }) => {
+      dispatch(refreshAccessTokenSuccess(accessToken));
+      return localStorage.setItem('accessToken', accessToken);
+    });
 };
