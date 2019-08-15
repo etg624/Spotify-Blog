@@ -19,30 +19,37 @@ class Profile extends Component {
     }
   }
 
-  componentWillUpdate(prevProps) {
-    const { currentUser, dispatch } = this.props;
-    const { accessToken, spotifyId } = currentUser;
-
-    if (prevProps.currentUser.accessToken !== accessToken) {
-    }
-  }
-
   render() {
-    const { currentUser } = this.props;
-    return !currentUser ? (
-      <Redirect to="/" />
-    ) : (
-      <div>{currentUser.displayName}</div>
-    );
+    const { currentUser, playlists } = this.props;
+
+    const playlistsToRender = playlists
+      ? playlists.map(playlist => {
+          console.log(playlist);
+          return (
+            <li>
+              <header>{playlist.name}</header>
+              <section>
+                <img
+                  src={playlist.images[0].url}
+                  alt={`Album art for ${playlist.name} playlist`}
+                />
+              </section>
+            </li>
+          );
+        })
+      : null;
+
+    return !currentUser ? <Redirect to="/" /> : <div>{playlistsToRender}</div>;
   }
 }
 
 const mapStateToProps = state => {
   if (state.auth.currentUser) {
     const { currentUser } = state.auth;
-
+    const { playlists } = state.user;
     return {
-      currentUser
+      currentUser,
+      playlists
     };
   }
   return state;
