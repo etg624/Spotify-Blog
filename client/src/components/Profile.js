@@ -8,13 +8,13 @@ import { API_BASE_URL, SPOTIFY_BASE_URL } from '../config';
 
 class Profile extends Component {
   componentDidMount() {
-    const { currentUser } = this.props;
+    const { currentUser, dispatch } = this.props;
 
     if (currentUser) {
-      const { dispatch } = this.props;
-      const { spotifyId } = this.props.currentUser;
+      const { spotifyId } = currentUser;
+
       dispatch(
-        fetchUserPlaylists(spotifyId, localStorage.getItem('accessToken')) //prev props seems to be an updated access token
+        fetchUserPlaylists(spotifyId, localStorage.getItem('accessToken'))
       );
     }
   }
@@ -24,14 +24,14 @@ class Profile extends Component {
 
     const playlistsToRender = playlists
       ? playlists.map(playlist => {
-          console.log(playlist);
+          const { name, images } = playlist;
           return (
             <li>
-              <header>{playlist.name}</header>
+              <header>{name}</header>
               <section>
                 <img
-                  src={playlist.images[0].url}
-                  alt={`Album art for ${playlist.name} playlist`}
+                  src={images[0].url}
+                  alt={`Album art for ${name} playlist`}
                 />
               </section>
             </li>

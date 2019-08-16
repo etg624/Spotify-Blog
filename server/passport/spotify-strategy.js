@@ -3,9 +3,7 @@ const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = require('../config');
 const User = require('../models/User');
 const passport = require('passport');
 passport.serializeUser(function(user, done) {
-  const { id, accessToken } = user;
-
-  done(null, { user: id, accessToken });
+  done(null, user._id);
 });
 
 passport.deserializeUser(function(obj, done) {

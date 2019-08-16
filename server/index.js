@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
+
 const spotifyStrategy = require('./passport/spotify-strategy');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
@@ -26,14 +27,13 @@ app.use(
 
 // Parse request body
 app.use(express.json());
-passport.use(spotifyStrategy);
+
 app.use(
   session({ secret: 'keyboard cat', resave: true, saveUninitialized: true })
-);
-// Initialize Passport!  Also use passport.session() middleware, to support
-// persistent login sessions (recommended).
+
 app.use(passport.initialize());
 app.use(passport.session());
+passport.use(spotifyStrategy);
 
 //Routes
 app.use('/api/auth/spotify', authRouter);
