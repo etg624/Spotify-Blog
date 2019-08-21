@@ -4,8 +4,9 @@ const request = require('request-promise');
 const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = require('../config');
 const spotifyAuth = passport.authenticate('spotify');
 const User = require('../models/User');
-
+const jwtAuth = passport.authenticate('jwt');
 router.get('/:spotifyId', (req, res, next) => {
+  console.log(req.user);
   const { spotifyId } = req.params;
   return User.findOne({ spotifyId }).then(user => {
     if (user) {

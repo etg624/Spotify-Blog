@@ -1,5 +1,5 @@
-import { SPOTIFY_BASE_URL } from '../config';
-import { setItemInLocalStorage } from '../helpers/local-storage';
+import { SPOTIFY_BASE_URL } from '../../config';
+import { setItemInLocalStorage } from '../../helpers/local-storage';
 export const FETCH_USER_PLAYLISTS_REQUEST = 'FETCH_USER_PLAYLISTS_REQUEST';
 export const FETCH_USER_PLAYLISTS_SUCCESS = 'FETCH_USER_PLAYLISTS_SUCCESS';
 export const FETCH_USER_PLAYLISTS_ERROR = 'FETCH_USER_PLAYLISTS_ERROR';
@@ -10,10 +10,11 @@ export const fetchUserPlaylistsSuccess = playlists => ({
 });
 
 export const fetchUserPlaylists = spotifyId => (dispatch, getState) => {
-  const { currentUser } = getState().auth;
+  const { currentUser } = getState().user;
 
   if (currentUser) {
     const { accessToken } = currentUser;
+
     setItemInLocalStorage('accessToken', accessToken);
     return fetch(`${SPOTIFY_BASE_URL}/users/${spotifyId}/playlists`, {
       headers: {
@@ -21,6 +22,8 @@ export const fetchUserPlaylists = spotifyId => (dispatch, getState) => {
       }
     })
       .then(res => res.json())
-      .then(playlists => dispatch(fetchUserPlaylistsSuccess(playlists)));
+      .then(playlists => {
+        dispatch(fetchUserPlaylistsSuccess(playlists));
+      });
   }
 };
