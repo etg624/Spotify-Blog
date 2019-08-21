@@ -18,12 +18,15 @@ const spotifyStrategy = new SpotifyStrategy(
   function(accessToken, refreshToken, expires_in, profile, done) {
     const { displayName, id } = profile;
     const newUser = { displayName, spotifyId: id, accessToken, refreshToken };
-    return User.findOne({ spotifyId: id }).then(user => {
-      if (!user) {
-        User.create(newUser);
+    return User.findOneAndUpdate({ spotifyId: id }, { accessToken }).then(
+      user => {
+        if (!user) {
+          User.create(newUser);
+        }
+
+        return done(null, user);
       }
-      return done(null, user);
-    });
+    );
   }
 );
 

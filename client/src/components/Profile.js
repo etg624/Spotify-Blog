@@ -5,17 +5,18 @@ import { connect } from 'react-redux';
 import { refreshAccessToken } from '../actions/auth';
 import { fetchUserPlaylists } from '../actions/user';
 import { API_BASE_URL, SPOTIFY_BASE_URL } from '../config';
-
+import { setItemInLocalStorage } from '../helpers/local-storage';
 class Profile extends Component {
   componentDidMount() {
     const { currentUser, dispatch } = this.props;
+    const localStorageAccessToken = localStorage.getItem('accessToken');
 
+    if (currentUser && !localStorageAccessToken) {
+      setItemInLocalStorage('accessToken', currentUser.accessToken);
+    }
     if (currentUser) {
       const { spotifyId } = currentUser;
-
-      dispatch(
-        fetchUserPlaylists(spotifyId, localStorage.getItem('accessToken'))
-      );
+      return dispatch(fetchUserPlaylists(spotifyId));
     }
   }
 
@@ -24,9 +25,9 @@ class Profile extends Component {
 
     const playlistsToRender = playlists
       ? playlists.map(playlist => {
-          const { name, images } = playlist;
+          const { name, images, id } = playlist;
           return (
-            <li>
+            <li key={id}>
               <header>{name}</header>
               <section>
                 <img

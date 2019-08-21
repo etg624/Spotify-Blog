@@ -1,5 +1,5 @@
 import { API_BASE_URL } from '../config';
-
+import { setItemInLocalStorage } from '../helpers/local-storage';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_REQUEST = 'FETCH_USER_REQUEST';
 export const FETCH_USER_ERROR = 'FETCH_USER_ERROR';
@@ -13,15 +13,14 @@ export const refreshAccessTokenSuccess = accessToken => ({
   accessToken
 });
 
-const setAccessTokenInLocalStorage = (accessToken, dispatch) => {
-  dispatch(localStorage.setItem('accessToken', accessToken));
-};
-
-export const fetchUser = user => (dispatch, getState) => {
+export const fetchUser = spotifyId => (dispatch, getState) => {
   dispatch(fetchUserRequest());
-  return fetch(`${API_BASE_URL}/user/${user}`)
+
+  return fetch(`${API_BASE_URL}/user/${spotifyId}`)
     .then(res => res.json())
-    .then(user => dispatch(fetchUserSuccess(user)));
+    .then(_user => {
+      return dispatch(fetchUserSuccess(_user));
+    });
 };
 
 export const refreshAccessToken = spotifyId => (dispatch, getState) => {
@@ -29,6 +28,6 @@ export const refreshAccessToken = spotifyId => (dispatch, getState) => {
     .then(res => res.json())
     .then(({ accessToken }) => {
       dispatch(refreshAccessTokenSuccess(accessToken));
-      return localStorage.setItem('accessToken', accessToken);
+      return setItemInLocalStorage('accessToken', accessToken);
     });
 };

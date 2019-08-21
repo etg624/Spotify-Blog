@@ -3,6 +3,7 @@ import { API_BASE_URL } from '../config';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
+import { getItemFromLocalStorage } from '../helpers/local-storage';
 
 import { fetchUser } from '../actions/auth';
 class Landing extends Component {
@@ -10,7 +11,12 @@ class Landing extends Component {
     const parsed = queryString.parse(window.location.search);
     const { user } = parsed;
 
-    this.props.dispatch(fetchUser(user));
+    const {
+      dispatch,
+      auth: { currentUser }
+    } = this.props;
+
+    return user ? dispatch(fetchUser(user)) : console.log(currentUser);
   }
 
   render() {

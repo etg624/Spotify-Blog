@@ -25,6 +25,7 @@ router.get(
   passport.authenticate('spotify', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
+
     const { spotifyId } = req.user;
     //res.cookie('id', req.user._id);
     res.redirect(`${CLIENT_ORIGIN}/profile?user=${spotifyId}`);

@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
 
+const jwtStrategy = require('./passport/jwt-strategy');
 const spotifyStrategy = require('./passport/spotify-strategy');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
@@ -29,12 +30,18 @@ app.use(
 app.use(express.json());
 
 app.use(
-  session({ secret: 'keyboard cat', resave: true, saveUninitialized: true })
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+    // cookie: { maxAge: 60000 }
+  })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(spotifyStrategy);
+passport.use(jwtStrategy);
 
 //Routes
 app.use('/api/auth/spotify', authRouter);
