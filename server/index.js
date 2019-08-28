@@ -33,8 +33,8 @@ app.use(
   session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: false
-    // cookie: { maxAge: 60000 }
+    saveUninitialized: false,
+    cookie: { maxAge: 600000, isLoggedIn: false }
   })
 );
 

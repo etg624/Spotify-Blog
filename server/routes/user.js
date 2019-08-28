@@ -9,6 +9,8 @@ router.get('/:spotifyId', (req, res, next) => {
   const { spotifyId } = req.params;
   return User.findOne({ spotifyId }).then(user => {
     if (user) {
+      req.session.cookie.isLoggedIn = true;
+      console.log(req.session);
       const { accessToken, spotifyId, displayName } = user;
       return res.json({ accessToken, spotifyId, displayName });
     } else return;
