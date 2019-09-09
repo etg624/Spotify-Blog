@@ -19,6 +19,14 @@ export default function reducer(state = initialState, action) {
       return { ...state, authToken: action.authToken };
     case AUTH_SUCCESS:
       return { ...state, userAuthInfo: action.userAuthInfo };
+    case CLEAR_AUTH:
+      return {
+        ...state,
+        userAuthInfo: null,
+        authToken: null,
+        loading: false,
+        error: null
+      };
     default:
       return state;
   }

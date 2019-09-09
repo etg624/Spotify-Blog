@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { API_BASE_URL } from '../config';
+
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
@@ -17,22 +17,19 @@ class Landing extends Component {
       storeJWT(authToken, dispatch);
       return dispatch(fetchUser(authToken));
     }
-    return storedAuthToken ? (
-      dispatch(fetchUser(storedAuthToken))
-    ) : (
-      <Redirect to="/login" />
-    );
+    if (storedAuthToken) {
+      storeJWT(storedAuthToken, dispatch);
+      return dispatch(fetchUser(storedAuthToken));
+    } else {
+      return <Redirect to="/" />;
+    }
   }
 
   render() {
     if (this.props.user.currentUser) {
       return <Redirect to={`/profile`} />;
     }
-    return (
-      <div>
-        <a href={`${API_BASE_URL}/auth/spotify`}>Login with Spotify</a>
-      </div>
-    );
+    return <div>Welcome</div>;
   }
 }
 

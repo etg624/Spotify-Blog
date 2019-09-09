@@ -15,7 +15,6 @@ export const fetchUserPlaylists = spotifyId => (dispatch, getState) => {
   if (currentUser) {
     const { accessToken } = currentUser;
 
-    setItemInLocalStorage('accessToken', accessToken);
     return fetch(`${SPOTIFY_BASE_URL}/users/${spotifyId}/playlists`, {
       headers: {
         Authorization: `Bearer ${accessToken}`

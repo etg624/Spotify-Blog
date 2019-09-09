@@ -2,16 +2,11 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUserPlaylists } from '../actions/userActions/fetchPlaylists';
-import { setItemInLocalStorage } from '../helpers/local-storage';
 
 class Profile extends Component {
   componentDidMount() {
     const { currentUser, dispatch } = this.props;
-    const localStorageAccessToken = localStorage.getItem('accessToken');
 
-    if (currentUser && !localStorageAccessToken) {
-      setItemInLocalStorage('accessToken', currentUser.accessToken);
-    }
     if (currentUser) {
       const { spotifyId } = currentUser;
 
@@ -21,7 +16,6 @@ class Profile extends Component {
 
   render() {
     const { currentUser, playlists } = this.props;
-
     const playlistsToRender = playlists
       ? playlists.map(playlist => {
           const { name, images, id } = playlist;
