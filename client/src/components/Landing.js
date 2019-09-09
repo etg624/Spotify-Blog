@@ -16,9 +16,10 @@ class Landing extends Component {
 
     if (!storedAuthToken) {
       storeJWT(authToken, dispatch);
+      return dispatch(fetchUser(authToken));
     }
 
-    return user ? dispatch(fetchUser(storedAuthToken)) : null;
+    return storedAuthToken ? dispatch(fetchUser(storedAuthToken)) : null;
   }
 
   render() {

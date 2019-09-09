@@ -18,7 +18,7 @@ export const fetchUser = authToken => dispatch => {
     headers: { Authorization: `Bearer ${authToken}` }
   })
     .then(res => res.json())
-    .then(_user => {
-      return dispatch(fetchUserSuccess(_user));
+    .then(user => {
+      return dispatch(fetchUserSuccess(user));
     });
 };
