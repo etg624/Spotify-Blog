@@ -4,22 +4,24 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { storeJWT } from '../actions/auth';
-import { getItemFromLocalStorage } from '../helpers/local-storage';
 
 import { fetchUser } from '../actions/userActions/fetchUser';
 class Landing extends Component {
   componentDidMount() {
     const parsed = queryString.parse(window.location.search);
-    const { user, authToken } = parsed;
+    const { authToken } = parsed;
     const { dispatch } = this.props;
     const storedAuthToken = localStorage.getItem('authToken');
 
-    if (!storedAuthToken) {
+    if (!storedAuthToken && authToken) {
       storeJWT(authToken, dispatch);
       return dispatch(fetchUser(authToken));
     }
-
-    return storedAuthToken ? dispatch(fetchUser(storedAuthToken)) : null;
+    return storedAuthToken ? (
+      dispatch(fetchUser(storedAuthToken))
+    ) : (
+      <Redirect to="/login" />
+    );
   }
 
   render() {
