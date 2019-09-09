@@ -24,7 +24,6 @@ function Header(props) {
 }
 
 const mapStateToProps = state => {
-  console.log(state.auth);
   const { userInfo } = state.auth;
   if (userInfo) {
     return { loggedIn: state.auth.userInfo.spotifyId !== null };
