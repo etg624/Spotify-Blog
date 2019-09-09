@@ -3,24 +3,29 @@ import { API_BASE_URL } from '../config';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import { getItemFromLocalStorage } from '../helpers/local-storage';
+import { storeJWT } from '../actions/auth';
 
-import { fetchUser } from '../actions/auth';
+import { fetchUser } from '../actions/userActions/fetchUser';
 class Landing extends Component {
   componentDidMount() {
     const parsed = queryString.parse(window.location.search);
-    const { user } = parsed;
+    const { authToken } = parsed;
+    const { dispatch } = this.props;
+    const storedAuthToken = localStorage.getItem('authToken');
 
-    const {
-      dispatch,
-      auth: { currentUser }
-    } = this.props;
-
-    return user ? dispatch(fetchUser(user)) : console.log(currentUser);
+    if (!storedAuthToken && authToken) {
+      storeJWT(authToken, dispatch);
+      return dispatch(fetchUser(authToken));
+    }
+    return storedAuthToken ? (
+      dispatch(fetchUser(storedAuthToken))
+    ) : (
+      <Redirect to="/login" />
+    );
   }
 
   render() {
-    if (this.props.auth.currentUser) {
+    if (this.props.user.currentUser) {
       return <Redirect to={`/profile`} />;
     }
     return (
@@ -33,6 +38,7 @@ class Landing extends Component {
 
 const mapStateToProps = state => {
   return {
+    user: state.user,
     auth: state.auth
   };
 };

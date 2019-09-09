@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
-import { refreshAccessToken } from '../actions/auth';
-import { fetchUserPlaylists } from '../actions/user';
-import { API_BASE_URL, SPOTIFY_BASE_URL } from '../config';
+import { fetchUserPlaylists } from '../actions/userActions/fetchPlaylists';
 import { setItemInLocalStorage } from '../helpers/local-storage';
+
 class Profile extends Component {
   componentDidMount() {
     const { currentUser, dispatch } = this.props;
@@ -16,6 +14,7 @@ class Profile extends Component {
     }
     if (currentUser) {
       const { spotifyId } = currentUser;
+
       return dispatch(fetchUserPlaylists(spotifyId));
     }
   }
@@ -45,9 +44,8 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => {
-  if (state.auth.currentUser) {
-    const { currentUser } = state.auth;
-    const { playlists } = state.user;
+  if (state.user.currentUser) {
+    const { playlists, currentUser } = state.user;
     return {
       currentUser,
       playlists

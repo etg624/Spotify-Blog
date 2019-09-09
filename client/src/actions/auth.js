@@ -1,26 +1,36 @@
 import { API_BASE_URL } from '../config';
 import { setItemInLocalStorage } from '../helpers/local-storage';
-export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
-export const FETCH_USER_REQUEST = 'FETCH_USER_REQUEST';
-export const FETCH_USER_ERROR = 'FETCH_USER_ERROR';
-export const REFRESH_ACCESS_TOKEN_SUCCESS = 'REFRESH_ACCESS_TOKEN_SUCCESS';
+import jwtDecode from 'jwt-decode';
 
-export const fetchUserRequest = () => ({ type: FETCH_USER_REQUEST });
-export const fetchUserSuccess = user => ({ type: FETCH_USER_SUCCESS, user });
-export const fetchUserError = err => ({ type: FETCH_USER_ERROR, err });
+export const REFRESH_ACCESS_TOKEN_SUCCESS = 'REFRESH_ACCESS_TOKEN_SUCCESS';
+export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN';
+export const CLEAR_AUTH = 'CLEAR_AUTH';
+export const AUTH_REQUEST = 'AUTH_REQUEST';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_ERROR = 'AUTH_ERROR';
+
+export const setAuthToken = authToken => ({ type: SET_AUTH_TOKEN, authToken });
+export const clearAuth = () => ({ type: CLEAR_AUTH });
+export const authRequest = () => ({ type: AUTH_REQUEST });
+export const authSuccess = userAuthInfo => ({
+  type: AUTH_SUCCESS,
+  userAuthInfo
+});
+export const authError = error => ({ type: AUTH_ERROR, error });
 export const refreshAccessTokenSuccess = accessToken => ({
   type: REFRESH_ACCESS_TOKEN_SUCCESS,
   accessToken
 });
 
-export const fetchUser = spotifyId => (dispatch, getState) => {
-  dispatch(fetchUserRequest());
-
-  return fetch(`${API_BASE_URL}/user/${spotifyId}`)
-    .then(res => res.json())
-    .then(_user => {
-      return dispatch(fetchUserSuccess(_user));
-    });
+export const storeJWT = (authToken, dispatch) => {
+  try {
+    const decodedToken = jwtDecode(authToken);
+    dispatch(setAuthToken(authToken));
+    dispatch(authSuccess(decodedToken.user));
+    setItemInLocalStorage('authToken', authToken);
+  } catch (e) {
+    console.log(e.message);
+  }
 };
 
 export const refreshAccessToken = spotifyId => (dispatch, getState) => {

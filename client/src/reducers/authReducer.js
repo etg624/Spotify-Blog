@@ -1,29 +1,24 @@
 import {
-  FETCH_USER_SUCCESS,
-  FETCH_USER_REQUEST,
-  FETCH_USER_ERROR,
-  REFRESH_ACCESS_TOKEN_SUCCESS
+  SET_AUTH_TOKEN,
+  CLEAR_AUTH,
+  AUTH_REQUEST,
+  AUTH_SUCCESS,
+  AUTH_ERROR
 } from '../actions/auth';
 
 const initialState = {
-  currentUser: null,
+  userAuthInfo: null,
+  authToken: null,
   loading: false,
   error: null
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_USER_REQUEST:
-      return { ...state, loading: true, error: null };
-    case FETCH_USER_SUCCESS:
-      return { ...state, currentUser: action.user, loading: false };
-    case FETCH_USER_ERROR:
-      return { ...state, loading: false, error: action.error };
-    case REFRESH_ACCESS_TOKEN_SUCCESS:
-      return {
-        ...state,
-        currentUser: { ...state.currentUser, accessToken: action.accessToken }
-      };
+    case SET_AUTH_TOKEN:
+      return { ...state, authToken: action.authToken };
+    case AUTH_SUCCESS:
+      return { ...state, userAuthInfo: action.userAuthInfo };
     default:
       return state;
   }
