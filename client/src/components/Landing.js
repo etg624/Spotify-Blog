@@ -12,10 +12,13 @@ class Landing extends Component {
     const parsed = queryString.parse(window.location.search);
     const { user, authToken } = parsed;
     const { dispatch } = this.props;
+    const storedAuthToken = localStorage.getItem('authToken');
 
-    storeJWT(authToken, dispatch);
+    if (!storedAuthToken) {
+      storeJWT(authToken, dispatch);
+    }
 
-    return user ? dispatch(fetchUser(user)) : null;
+    return user ? dispatch(fetchUser(storedAuthToken)) : null;
   }
 
   render() {
