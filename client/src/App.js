@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+
 import { connect } from 'react-redux';
+import Header from './components/Header';
 import Landing from './components/Landing';
+
 import Profile from './components/Profile';
 import { refreshAccessToken } from './actions/auth';
+
 import './App.css';
 
 class App extends Component {
@@ -12,6 +16,9 @@ class App extends Component {
     if (!prevProps.loggedIn && loggedIn) {
       // When we are logged in, refresh the auth token periodically
       this.startPeriodicRefresh();
+    } else if (prevProps.loggedIn && !loggedIn) {
+      // Stop refreshing when we log out
+      this.stopPeriodicRefresh();
     }
   }
 
@@ -21,6 +28,7 @@ class App extends Component {
 
   startPeriodicRefresh() {
     const { dispatch, currentUser } = this.props;
+
     this.refreshInterval = setInterval(
       () => dispatch(refreshAccessToken(currentUser.spotifyId)),
       35000 // 35 seconds
@@ -31,13 +39,13 @@ class App extends Component {
     if (!this.refreshInterval) {
       return;
     }
-
     clearInterval(this.refreshInterval);
   }
 
   render() {
     return (
       <div className="App">
+        <Header loggedIn={this.props.loggedIn} />
         <Route path="/" component={Landing} />
         <Route path="/profile" component={Profile} />
       </div>
@@ -46,8 +54,8 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  loggedIn: state.user.currentUser !== null,
-  currentUser: state.user.currentUser
+  loggedIn: state.auth.userAuthInfo !== null,
+  currentUser: state.auth.userAuthInfo
 });
 
 export default connect(mapStateToProps)(App);

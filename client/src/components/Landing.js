@@ -29,11 +29,7 @@ class Landing extends Component {
     if (this.props.auth.userAuthInfo) {
       return <Redirect to="/profile" />;
     }
-    return (
-      <div>
-        <a href={`${API_BASE_URL}/auth/spotify`}>Login with Spotify</a>
-      </div>
-    );
+    return <div>Welcome</div>;
   }
 }
 
