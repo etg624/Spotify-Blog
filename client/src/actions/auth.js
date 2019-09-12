@@ -37,7 +37,6 @@ export const refreshAccessToken = spotifyId => (dispatch, getState) => {
   fetch(`${API_BASE_URL}/user/${spotifyId}/refresh`, {})
     .then(res => res.json())
     .then(({ accessToken }) => {
-      dispatch(refreshAccessTokenSuccess(accessToken));
-      return setItemInLocalStorage('accessToken', accessToken);
+      return dispatch(refreshAccessTokenSuccess(accessToken));
     });
 };

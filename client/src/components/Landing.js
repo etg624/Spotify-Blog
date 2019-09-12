@@ -17,16 +17,17 @@ class Landing extends Component {
       storeJWT(authToken, dispatch);
       return dispatch(fetchUser(authToken));
     }
-    return storedAuthToken ? (
-      dispatch(fetchUser(storedAuthToken))
-    ) : (
-      <Redirect to="/login" />
-    );
+    if (storedAuthToken) {
+      storeJWT(storedAuthToken, dispatch);
+      return dispatch(fetchUser(storedAuthToken));
+    } else {
+      return <Redirect to="/" />;
+    }
   }
 
   render() {
-    if (this.props.user.currentUser) {
-      return <Redirect to={`/profile`} />;
+    if (this.props.auth.userAuthInfo) {
+      return <Redirect to="/profile" />;
     }
     return (
       <div>

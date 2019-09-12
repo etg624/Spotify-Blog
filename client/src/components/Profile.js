@@ -2,56 +2,63 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUserPlaylists } from '../actions/userActions/fetchPlaylists';
-import { setItemInLocalStorage } from '../helpers/local-storage';
+
+import requiresLogin from './HOC/requiresLogin';
+import '../styles/Profile.css';
 
 class Profile extends Component {
   componentDidMount() {
     const { currentUser, dispatch } = this.props;
-    const localStorageAccessToken = localStorage.getItem('accessToken');
 
-    if (currentUser && !localStorageAccessToken) {
-      setItemInLocalStorage('accessToken', currentUser.accessToken);
-    }
-    if (currentUser) {
-      const { spotifyId } = currentUser;
-
-      return dispatch(fetchUserPlaylists(spotifyId));
-    }
+    return dispatch(fetchUserPlaylists(currentUser));
   }
 
   render() {
-    const { currentUser, playlists } = this.props;
+    const { currentUser, playlists, loading } = this.props;
+    if (loading) {
+      return <div>Loading</div>;
+    }
+    const playlistsToRender = playlists.length ? (
+      playlists.map(playlist => {
+        const { name, images, id } = playlist;
+        return (
+          <li key={id} className="playlist-item">
+            <header className="playlist-item-name">
+              <h2>{name}</h2>
+            </header>
 
-    const playlistsToRender = playlists
-      ? playlists.map(playlist => {
-          const { name, images, id } = playlist;
-          return (
-            <li key={id}>
-              <header>{name}</header>
-              <section>
-                <img
-                  src={images[0].url}
-                  alt={`Album art for ${name} playlist`}
-                />
-              </section>
-            </li>
-          );
-        })
-      : null;
+            <section className="playlist-item-img-container">
+              <img
+                className="playlist-item-img"
+                src={images[0].url}
+                alt={`Album art for ${name} playlist`}
+              />
+            </section>
+          </li>
+        );
+      })
+    ) : (
+      <div>No PlayLists </div>
+    );
 
-    return !currentUser ? <Redirect to="/" /> : <div>{playlistsToRender}</div>;
+    return (
+      <main className="profile">
+        <ul className="playlists">{playlistsToRender}</ul>
+      </main>
+    );
   }
 }
 
 const mapStateToProps = state => {
-  if (state.user.currentUser) {
-    const { playlists, currentUser } = state.user;
-    return {
-      currentUser,
-      playlists
-    };
-  }
-  return state;
+  // console.log(state);
+
+  const { playlists, loading } = state.user;
+
+  return {
+    playlists,
+    loading,
+    currentUser: state.auth.userAuthInfo.spotifyId
+  };
 };
 
-export default connect(mapStateToProps)(Profile);
+export default requiresLogin()(connect(mapStateToProps)(Profile));

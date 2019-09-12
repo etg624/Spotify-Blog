@@ -15,12 +15,24 @@ class App extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.stopPeriodicRefresh();
+  }
+
   startPeriodicRefresh() {
     const { dispatch, currentUser } = this.props;
     this.refreshInterval = setInterval(
       () => dispatch(refreshAccessToken(currentUser.spotifyId)),
       35000 // 35 seconds
     );
+  }
+
+  stopPeriodicRefresh() {
+    if (!this.refreshInterval) {
+      return;
+    }
+
+    clearInterval(this.refreshInterval);
   }
 
   render() {

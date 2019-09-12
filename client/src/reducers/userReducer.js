@@ -13,7 +13,8 @@ import {
 
 const initialState = {
   playlists: [],
-  currentUser: null
+  currentUser: null,
+  loading: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -23,6 +24,8 @@ export default function reducer(state = initialState, action) {
         ...state,
         currentUser: { ...state.currentUser, accessToken: action.accessToken }
       };
+    case FETCH_USER_PLAYLISTS_REQUEST:
+      return { ...state, loading: true, error: null };
     case FETCH_USER_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_USER_SUCCESS:
@@ -34,7 +37,12 @@ export default function reducer(state = initialState, action) {
         ...state,
         playlists: [...state.playlists, ...action.playlists.items]
       };
-
+    case FETCH_USER_PLAYLISTS_ERROR:
+      return {
+        ...state,
+        error: action.error,
+        loading: false
+      };
     default:
       return state;
   }

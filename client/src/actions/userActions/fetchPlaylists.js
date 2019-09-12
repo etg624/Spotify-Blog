@@ -1,5 +1,6 @@
 import { SPOTIFY_BASE_URL } from '../../config';
-import { setItemInLocalStorage } from '../../helpers/local-storage';
+import { clearAuth } from '../auth';
+import decodeJWT from 'jwt-decode';
 export const FETCH_USER_PLAYLISTS_REQUEST = 'FETCH_USER_PLAYLISTS_REQUEST';
 export const FETCH_USER_PLAYLISTS_SUCCESS = 'FETCH_USER_PLAYLISTS_SUCCESS';
 export const FETCH_USER_PLAYLISTS_ERROR = 'FETCH_USER_PLAYLISTS_ERROR';
@@ -9,21 +10,35 @@ export const fetchUserPlaylistsSuccess = playlists => ({
   playlists
 });
 
+export const fetchUserPlaylistsRequest = () => {
+  return { type: FETCH_USER_PLAYLISTS_REQUEST };
+};
+
+export const fetchUserPlaylistsError = error => ({
+  type: FETCH_USER_PLAYLISTS_ERROR,
+  error
+});
+
 export const fetchUserPlaylists = spotifyId => (dispatch, getState) => {
-  const { currentUser } = getState().user;
+  const { authToken } = getState().auth;
 
-  if (currentUser) {
-    const { accessToken } = currentUser;
+  const { accessToken } = decodeJWT(authToken).user;
 
-    setItemInLocalStorage('accessToken', accessToken);
-    return fetch(`${SPOTIFY_BASE_URL}/users/${spotifyId}/playlists`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
+  dispatch(fetchUserPlaylistsRequest());
+
+  return fetch(`${SPOTIFY_BASE_URL}/users/${spotifyId}/playlists`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+    .then(res => {
+      return res.json();
     })
-      .then(res => res.json())
-      .then(playlists => {
-        dispatch(fetchUserPlaylistsSuccess(playlists));
-      });
-  }
+    .then(playlists => {
+      dispatch(fetchUserPlaylistsSuccess(playlists));
+    })
+    .catch(err => {
+      dispatch(clearAuth());
+      dispatch(fetchUserPlaylistsError(err));
+    });
 };

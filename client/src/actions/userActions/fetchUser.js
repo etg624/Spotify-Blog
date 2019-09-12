@@ -13,7 +13,6 @@ export const fetchUser = authToken => dispatch => {
   const decodedJwtToken = jwtDecode(authToken);
   const { spotifyId } = decodedJwtToken.user;
   dispatch(fetchUserRequest());
-
   return fetch(`${API_BASE_URL}/user/${spotifyId}`, {
     headers: { Authorization: `Bearer ${authToken}` }
   })
