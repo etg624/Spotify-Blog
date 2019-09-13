@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Playlist from './Playlist';
 import { fetchUserPlaylists } from '../actions/playlists/fetchPlaylists';
+import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
 
 import requiresLogin from './HOC/requiresLogin';
 import '../styles/Profile.css';
@@ -15,7 +16,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { playlists, loading } = this.props;
+    const { playlists, loading, dispatch } = this.props;
     if (loading) {
       return <div>Loading</div>;
     }

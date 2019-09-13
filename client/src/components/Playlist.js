@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchUserPlaylists } from '../actions/playlists/fetchPlaylists';
+import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
 import requiresLogin from './HOC/requiresLogin';
 
 function Playlist(props) {
-  const { name, image, id } = props;
+  const { name, image, id, dispatch } = props;
+
   return (
-    <div>
+    <div onClick={() => dispatch(fetchPlaylistTracks(id))}>
       <header className="playlist-item-name">
         <h2>{name.length <= 30 ? name : `${name.slice(0, 30)}...`}</h2>
       </header>
@@ -23,4 +24,4 @@ function Playlist(props) {
   );
 }
 
-export default Playlist;
+export default connect()(Playlist);

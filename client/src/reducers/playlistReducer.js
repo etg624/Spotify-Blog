@@ -4,11 +4,18 @@ import {
   FETCH_USER_PLAYLISTS_REQUEST
 } from '../actions/playlists/fetchPlaylists';
 
-import { REFRESH_ACCESS_TOKEN_SUCCESS } from '../actions/auth';
+import {
+  FETCH_PLAYLIST_TRACKS_ERROR,
+  FETCH_PLAYLIST_TRACKS_REQUEST,
+  FETCH_PLAYLIST_TRACKS_SUCCESS
+} from '../actions/playlists/fetchPlaylistTracks';
 
 const initialState = {
   playlists: [],
-  loading: false
+  currentPlaylist: {},
+  loading: false,
+  error: null,
+  modalOpen: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -27,6 +34,24 @@ export default function reducer(state = initialState, action) {
         error: action.error,
         loading: false
       };
+
+    case FETCH_PLAYLIST_TRACKS_REQUEST:
+      return { ...state, loading: true, error: null };
+
+    case FETCH_PLAYLIST_TRACKS_SUCCESS:
+      console.log(action.tracks);
+      return {
+        ...state,
+        playlists: state.playlists.map(playlist => {
+          if (playlist.id === action.playlistId) {
+            return { ...playlist, tracks: action.tracks };
+          }
+          return playlist;
+        })
+      };
+    case FETCH_PLAYLIST_TRACKS_ERROR:
+      return { ...state, error: action.error, loading: false };
+
     default:
       return state;
   }
