@@ -14,7 +14,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { currentUser, playlists, loading } = this.props;
+    const { playlists, loading } = this.props;
     if (loading) {
       return <div>Loading</div>;
     }
@@ -24,7 +24,7 @@ class Profile extends Component {
         return (
           <li key={id} className="playlist-item">
             <header className="playlist-item-name">
-              <h2>{name}</h2>
+              <h2>{name.length <= 30 ? name : `${name.slice(0, 30)}...`}</h2>
             </header>
 
             <section className="playlist-item-img-container">

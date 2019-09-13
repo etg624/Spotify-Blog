@@ -1,16 +1,21 @@
 import React from 'react';
-import { API_BASE_URL } from '../config';
-import { clearAuth } from '../actions/auth';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { API_BASE_URL } from '../config';
+import { clearAuth } from '../actions/auth';
+import '../styles/Header.css';
+
 function Header(props) {
   const { loggedIn, dispatch } = props;
   return (
-    <header>
+    <header className="main-header">
       {!loggedIn ? (
-        <a href={`${API_BASE_URL}/auth/spotify`}>Login with Spotify</a>
+        <a className="header-link" href={`${API_BASE_URL}/auth/spotify`}>
+          Login with Spotify
+        </a>
       ) : (
-        <Link to="/" onClick={() => logOut(dispatch)}>
+        <Link to="/" className="header-link" onClick={() => logOut(dispatch)}>
           Logout
         </Link>
       )}
