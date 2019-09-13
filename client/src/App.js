@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from './components/Header';
 import Landing from './components/Landing';
+import Tracks from './components/Tracks';
 
 import Profile from './components/Profile';
 import { refreshAccessToken } from './actions/auth';
@@ -48,6 +49,7 @@ class App extends Component {
         <Header loggedIn={this.props.loggedIn} />
         <Route path="/" component={Landing} />
         <Route path="/profile" component={Profile} />
+        <Route path="/playlist/tracks/:id" component={Tracks} />
       </div>
     );
   }

@@ -39,15 +39,14 @@ export default function reducer(state = initialState, action) {
       return { ...state, loading: true, error: null };
 
     case FETCH_PLAYLIST_TRACKS_SUCCESS:
-      console.log(action.tracks);
       return {
         ...state,
-        playlists: state.playlists.map(playlist => {
-          if (playlist.id === action.playlistId) {
-            return { ...playlist, tracks: action.tracks };
-          }
-          return playlist;
-        })
+        currentPlaylist: {
+          ...state.currentPlaylist,
+          id: action.playlistId,
+          tracks: [...action.tracks]
+        },
+        loading: false
       };
     case FETCH_PLAYLIST_TRACKS_ERROR:
       return { ...state, error: action.error, loading: false };

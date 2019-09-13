@@ -1,13 +1,14 @@
+import decodeJWT from 'jwt-decode';
 export const FETCH_PLAYLIST_TRACKS_REQUEST = 'FETCH_PLAYLIST_TRACKS_REQUEST';
 export const fetchPlayListTracksRequest = () => ({
   type: FETCH_PLAYLIST_TRACKS_REQUEST
 });
 
 export const FETCH_PLAYLIST_TRACKS_SUCCESS = 'FETCH_PLAYLIST_TRACKS_SUCCESS';
-export const fetchPlayListTracksSuccess = (tracks, playListId) => ({
+export const fetchPlayListTracksSuccess = (tracks, playlistId) => ({
   type: FETCH_PLAYLIST_TRACKS_SUCCESS,
   tracks,
-  playListId
+  playlistId
 });
 
 export const FETCH_PLAYLIST_TRACKS_ERROR = 'FETCH_PLAYLIST_TRACKS_ERROR';
@@ -17,7 +18,10 @@ export const fetchPlayListTracksError = error => ({
 });
 
 export const fetchPlaylistTracks = playlistId => (dispatch, getState) => {
-  const { accessToken } = getState().user.currentUser;
+  const { authToken } = getState().auth;
+  const { accessToken } = decodeJWT(authToken).user;
+
+  dispatch(fetchPlayListTracksRequest());
   return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
     headers: { Authorization: `Bearer ${accessToken}` }
   })
