@@ -41,8 +41,7 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => {
-  const { playlists, loading } = state.user;
-
+  const { playlists, loading } = state.playlists;
   return {
     playlists,
     loading,

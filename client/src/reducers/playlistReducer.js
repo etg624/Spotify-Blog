@@ -18,6 +18,7 @@ export default function reducer(state = initialState, action) {
     case FETCH_USER_PLAYLISTS_SUCCESS:
       return {
         ...state,
+        loading: false,
         playlists: [...state.playlists, ...action.playlists.items]
       };
     case FETCH_USER_PLAYLISTS_ERROR:
