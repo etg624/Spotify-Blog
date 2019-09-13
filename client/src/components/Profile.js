@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchUserPlaylists } from '../actions/userActions/fetchPlaylists';
+import Playlist from './Playlist';
+import { fetchUserPlaylists } from '../actions/playlists/fetchPlaylists';
 
 import requiresLogin from './HOC/requiresLogin';
 import '../styles/Profile.css';
 
 class Profile extends Component {
   componentDidMount() {
-    const { currentUser, dispatch } = this.props;
+    const { spotifyId, dispatch } = this.props;
 
-    return dispatch(fetchUserPlaylists(currentUser));
+    return dispatch(fetchUserPlaylists(spotifyId));
   }
 
   render() {
@@ -23,17 +24,7 @@ class Profile extends Component {
         const { name, images, id } = playlist;
         return (
           <li key={id} className="playlist-item">
-            <header className="playlist-item-name">
-              <h2>{name.length <= 30 ? name : `${name.slice(0, 30)}...`}</h2>
-            </header>
-
-            <section className="playlist-item-img-container">
-              <img
-                className="playlist-item-img"
-                src={images[0].url}
-                alt={`Album art for ${name} playlist`}
-              />
-            </section>
+            <Playlist name={name} image={images[0].url} id={id} />
           </li>
         );
       })
@@ -50,14 +41,12 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state);
-
   const { playlists, loading } = state.user;
 
   return {
     playlists,
     loading,
-    currentUser: state.auth.userAuthInfo.spotifyId
+    spotifyId: state.auth.userAuthInfo.spotifyId
   };
 };
 
