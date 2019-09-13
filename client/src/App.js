@@ -49,7 +49,7 @@ class App extends Component {
         <Header loggedIn={this.props.loggedIn} />
         <Route path="/" component={Landing} />
         <Route path="/profile" component={Profile} />
-        <Route path="/playlist/tracks/:id" component={Tracks} />
+        <Route path="/playlist/:id/tracks" component={Tracks} />
       </div>
     );
   }

@@ -9,7 +9,7 @@ function Playlist(props) {
   const { name, image, id, dispatch } = props;
 
   return (
-    <Link to={`/playlist/tracks/${id}`}>
+    <Link to={`/playlist/${id}/tracks`}>
       <header className="playlist-item-name">
         <h2>{name.length <= 30 ? name : `${name.slice(0, 30)}...`}</h2>
       </header>

@@ -1,5 +1,6 @@
 import { API_BASE_URL } from '../../config';
 import jwtDecode from 'jwt-decode';
+import { clearAuth } from '../auth';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_REQUEST = 'FETCH_USER_REQUEST';
 export const FETCH_USER_ERROR = 'FETCH_USER_ERROR';
@@ -18,6 +19,7 @@ export const fetchUser = authToken => dispatch => {
   })
     .then(res => res.json())
     .then(user => {
+      dispatch(clearAuth());
       return dispatch(fetchUserSuccess(user));
     });
 };
