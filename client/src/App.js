@@ -47,10 +47,17 @@ class App extends Component {
     return (
       <div className="App">
         <Header loggedIn={this.props.loggedIn} />
-        <Route exact path="/" component={Landing} />
+
+        {/* no exact path in order to match window.location.search */}
+        <Route path="/" component={Landing} />
+
         <Switch>
-          <Route exact path="/profile" component={Profile} />
-          <Route exact path="/playlist/:id/tracks" component={Tracks} />
+          <Route exact path="/profile" render={() => <Profile />} />
+          <Route
+            exact
+            path="/playlist/:id/tracks"
+            render={props => <Tracks {...props} />}
+          />
         </Switch>
       </div>
     );

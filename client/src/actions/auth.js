@@ -25,6 +25,7 @@ export const refreshAccessTokenSuccess = accessToken => ({
 export const storeJWT = (authToken, dispatch) => {
   try {
     const decodedToken = jwtDecode(authToken);
+
     dispatch(setAuthToken(authToken));
     dispatch(authSuccess(decodedToken.user));
     setItemInLocalStorage('authToken', authToken);

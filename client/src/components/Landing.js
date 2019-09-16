@@ -19,9 +19,7 @@ class Landing extends Component {
     if (storedAuthToken) {
       storeJWT(storedAuthToken, dispatch);
       return dispatch(fetchUser(storedAuthToken));
-    } else {
-      return <Redirect to="/" />;
-    }
+    } else return <Redirect to="/" />;
   }
 
   render() {

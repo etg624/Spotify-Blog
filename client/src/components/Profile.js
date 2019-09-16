@@ -17,7 +17,6 @@ class Profile extends Component {
 
   render() {
     const { playlists, loading, currentPlaylist } = this.props;
-    console.log(currentPlaylist);
     if (loading) {
       return <div>Loading</div>;
     }

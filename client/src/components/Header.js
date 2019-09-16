@@ -28,8 +28,8 @@ function Header({ loggedIn, dispatch }) {
 }
 
 const logOut = dispatch => {
-  dispatch(clearAuth());
-  return localStorage.removeItem('authToken');
+  localStorage.removeItem('authToken');
+  return dispatch(clearAuth());
 };
 
 export default connect()(Header);
