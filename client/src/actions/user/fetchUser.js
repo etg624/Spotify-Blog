@@ -19,7 +19,11 @@ export const fetchUser = authToken => dispatch => {
   })
     .then(res => res.json())
     .then(user => {
-      dispatch(clearAuth());
       return dispatch(fetchUserSuccess(user));
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(clearAuth());
+      dispatch(fetchUserError(err));
     });
 };

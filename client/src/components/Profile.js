@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+
+import Player from './Player';
 import { connect } from 'react-redux';
 import Playlist from './Playlist';
 import { fetchUserPlaylists } from '../actions/playlists/fetchPlaylists';
-import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
 
 import requiresLogin from './HOC/requiresLogin';
 import '../styles/Profile.css';
@@ -16,7 +16,8 @@ class Profile extends Component {
   }
 
   render() {
-    const { playlists, loading, dispatch } = this.props;
+    const { playlists, loading, currentPlaylist } = this.props;
+    console.log(currentPlaylist);
     if (loading) {
       return <div>Loading</div>;
     }
@@ -25,7 +26,7 @@ class Profile extends Component {
         const { name, images, id } = playlist;
         return (
           <li key={id} className="playlist-item">
-            <Playlist name={name} image={images[0].url} id={id} />
+            <Playlist name={name} image={images[0].url} playlistId={id} />
           </li>
         );
       })
@@ -36,13 +37,15 @@ class Profile extends Component {
     return (
       <main className="profile">
         <ul className="playlists">{playlistsToRender}</ul>
+
+        <Player playlistId={currentPlaylist && currentPlaylist.id} />
       </main>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const { playlists, loading } = state.playlists;
+  const { playlists, loading, currentPlaylist } = state.playlists;
   return {
     playlists,
     loading,

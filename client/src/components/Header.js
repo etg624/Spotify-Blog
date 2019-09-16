@@ -6,8 +6,7 @@ import { API_BASE_URL } from '../config';
 import { clearAuth } from '../actions/auth';
 import '../styles/Header.css';
 
-function Header(props) {
-  const { loggedIn, dispatch } = props;
+function Header({ loggedIn, dispatch }) {
   return (
     <header className="main-header">
       {!loggedIn ? (
@@ -15,9 +14,14 @@ function Header(props) {
           Login with Spotify
         </a>
       ) : (
-        <Link to="/" className="header-link" onClick={() => logOut(dispatch)}>
-          Logout
-        </Link>
+        <>
+          <Link to="/" className="header-link" onClick={() => logOut(dispatch)}>
+            Logout
+          </Link>
+          <Link to={loggedIn ? '/profile' : '/'} className="header-link">
+            {loggedIn ? 'Profile' : null}
+          </Link>
+        </>
       )}
     </header>
   );

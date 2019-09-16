@@ -31,10 +31,12 @@ router.get('/:spotifyId/refresh', (req, res, next) => {
       json: true
     };
 
-    request.post(options, (error, response, body) => {
-      const { access_token: accessToken } = body;
-      return res.json({ accessToken });
-    });
+    request
+      .post(options, (error, response, body) => {
+        const { access_token: accessToken } = body;
+        return res.json({ accessToken });
+      })
+      .catch(err => next(err));
   });
 });
 

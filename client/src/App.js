@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import Header from './components/Header';
@@ -47,9 +47,11 @@ class App extends Component {
     return (
       <div className="App">
         <Header loggedIn={this.props.loggedIn} />
-        <Route path="/" component={Landing} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/playlist/:id/tracks" component={Tracks} />
+        <Route exact path="/" component={Landing} />
+        <Switch>
+          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/playlist/:id/tracks" component={Tracks} />
+        </Switch>
       </div>
     );
   }

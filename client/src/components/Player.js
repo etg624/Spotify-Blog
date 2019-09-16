@@ -1,10 +1,24 @@
-import React, { Component } from 'react';
-import { startPlaylist } from '../actions/playlists/soundActions';
+import React from 'react';
+import {
+  startPlaylist,
+  navigatePlaylist
+} from '../actions/playlists/soundActions';
 import { connect } from 'react-redux';
 function Player(props) {
   const { playlistId, dispatch } = props;
   return (
-    <button onClick={() => dispatch(startPlaylist(playlistId))}>PLAY</button>
+    <footer>
+      <button onClick={() => dispatch(navigatePlaylist('previous'))}>
+        PREVIOUS
+      </button>
+      <button onClick={() => dispatch(startPlaylist(playlistId, 'play'))}>
+        PLAY
+      </button>
+      <button onClick={() => dispatch(startPlaylist(playlistId, 'pause'))}>
+        PAUSE
+      </button>
+      <button onClick={() => dispatch(navigatePlaylist('next'))}>NEXT</button>
+    </footer>
   );
 }
 

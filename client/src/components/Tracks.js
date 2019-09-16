@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Modal from './Modal';
 import Player from './Player';
 import Loading from './Loading';
 import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
@@ -27,15 +26,7 @@ class Tracks extends Component {
     const tracksToRender =
       tracks &&
       tracks.map(track => {
-        console.log(track);
-
-        return (
-          <li>
-            {track.name}
-            <p>{track.id}</p>
-            <p>{track.album.id}</p>
-          </li>
-        );
+        return <li key={track.id}>{track.name}</li>;
       });
     return (
       <div>

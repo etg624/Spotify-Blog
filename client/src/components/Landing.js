@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { API_BASE_URL } from '../config';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { storeJWT } from '../actions/auth';
 
-import { fetchUser } from '../actions/userActions/fetchUser';
+import { fetchUser } from '../actions/user/fetchUser';
 class Landing extends Component {
   componentDidMount() {
     const parsed = queryString.parse(window.location.search);
