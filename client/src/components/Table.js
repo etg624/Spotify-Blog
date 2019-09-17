@@ -1,19 +1,27 @@
 import React from 'react';
 import '../styles/Table.css';
 
-function Table({ data }) {
+function Table({ data, startTrack }) {
   function renderTableData() {
-    console.log(data);
+    // console.log(data);
     return (
       data &&
-      data.map(({ album, name, artists }) => (
-        <tr className="tracks-data" key={name}>
-          <td></td>
-          <td>{name}</td>
-          <td>{album.name.slice(0, 16)}...</td>
-          <td>{artists[0].name}</td>
-        </tr>
-      ))
+      data.map(({ album, name, artists, id }) => {
+        return (
+          <tr
+            className="tracks-data"
+            key={name}
+            onDoubleClick={() => {
+              startTrack(id);
+            }}
+          >
+            <td></td>
+            <td className="track-title">{name}</td>
+            <td>{album.name.slice(0, 16)}...</td>
+            <td>{artists[0].name}</td>
+          </tr>
+        );
+      })
     );
   }
 

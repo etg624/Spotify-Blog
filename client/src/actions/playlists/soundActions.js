@@ -4,6 +4,12 @@ export const START_SONG_REQUEST = 'START_SONG_REQUEST';
 export const startSongRequest = () => ({
   type: START_SONG_REQUEST
 });
+
+export const START_SONG_SUCCESS = 'START_SONG_SUCCESS';
+export const startSongSuccess = () => ({
+  type: START_SONG_SUCCESS
+});
+
 export const START_SONG_ERROR = 'START_SONG_ERROR';
 export const startSongError = playlistId => ({
   type: START_SONG_ERROR,
@@ -34,15 +40,14 @@ export const navigatePlaylist = direction => (dispatch, getState) => {
   }).then(() => dispatch(navigatePlaylistSuccess(direction)));
 };
 
-export const startPlaylist = (playlistId, playlistState) => (
+export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
   dispatch,
   getState
 ) => {
   dispatch(startSongRequest());
   const { authToken } = getState().auth;
   const { accessToken } = decodeJWT(authToken).user;
-
-  return fetch(`https://api.spotify.com/v1/me/player/${playlistState}`, {
+  const options = {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -50,12 +55,12 @@ export const startPlaylist = (playlistId, playlistState) => (
     },
     body: JSON.stringify({
       context_uri: `spotify:playlist:${playlistId}`,
-      offset: {
-        position: 0
-      },
+      offset: isTrack ? { uri: `spotify:track:${trackId}` } : { position: 0 },
       position_ms: 0
     })
-  })
+  };
+
+  return fetch(`https://api.spotify.com/v1/me/player/${playingState}`, options)
     .then(() => dispatch(startPlaylistSuccess()))
     .catch(err => console.log(err));
 };

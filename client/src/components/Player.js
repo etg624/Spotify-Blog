@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  startPlaylist,
+  setPlayingState,
   navigatePlaylist
 } from '../actions/playlists/soundActions';
 import { connect } from 'react-redux';
@@ -11,10 +11,18 @@ function Player(props) {
       <button onClick={() => dispatch(navigatePlaylist('previous'))}>
         PREVIOUS
       </button>
-      <button onClick={() => dispatch(startPlaylist(playlistId, 'play'))}>
+      <button
+        onClick={() =>
+          dispatch(setPlayingState(playlistId, null, false, 'play'))
+        }
+      >
         PLAY
       </button>
-      <button onClick={() => dispatch(startPlaylist(playlistId, 'pause'))}>
+      <button
+        onClick={() =>
+          dispatch(setPlayingState(playlistId, null, false, 'pause'))
+        }
+      >
         PAUSE
       </button>
       <button onClick={() => dispatch(navigatePlaylist('next'))}>NEXT</button>

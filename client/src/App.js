@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from './components/Header';
 import Landing from './components/Landing';
-import Tracks from './components/Tracks';
+import Playlist from './components/Playlist';
 
 import Profile from './components/Profile';
 import { refreshAccessToken } from './actions/auth';
@@ -55,8 +55,8 @@ class App extends Component {
           <Route exact path="/profile" render={() => <Profile />} />
           <Route
             exact
-            path="/playlist/:id/tracks"
-            render={props => <Tracks {...props} />}
+            path="/playlist/:id"
+            render={props => <Playlist {...props} />}
           />
         </Switch>
       </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Player from './Player';
 import { connect } from 'react-redux';
-import Playlist from './Playlist';
+import PlaylistLink from './PlaylistLink';
 import { fetchUserPlaylists } from '../actions/playlists/fetchPlaylists';
 
 import requiresLogin from './HOC/requiresLogin';
@@ -25,7 +25,7 @@ class Profile extends Component {
         const { name, images, id } = playlist;
         return (
           <li key={id} className="playlist-item">
-            <Playlist name={name} image={images[0].url} playlistId={id} />
+            <PlaylistLink name={name} image={images[0].url} playlistId={id} />
           </li>
         );
       })

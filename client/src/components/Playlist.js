@@ -1,23 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-function Playlist({ name, image, playlistId }) {
-  return (
-    <Link to={`/playlist/${playlistId}/tracks`}>
-      <header className="playlist-item-name">
-        <h2>{name.length <= 30 ? name : `${name.slice(0, 30)}...`}</h2>
-      </header>
+import Player from './Player';
+import Loading from './Loading';
+import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
+import { setPlayingState } from '../actions/playlists/soundActions';
+import Table from './Table';
 
-      <section className="playlist-item-img-container">
-        <img
-          className="playlist-item-img"
-          src={image}
-          alt={`Album art for ${name} playlist`}
-        />
-      </section>
-    </Link>
-  );
+class Playlist extends Component {
+  constructor(props) {
+    super(props);
+    this.setTrackPlayingState = this.setTrackPlayingState.bind(this);
+  }
+
+  componentDidMount() {
+    const {
+      dispatch,
+      match: { params }
+    } = this.props;
+    dispatch(fetchPlaylistTracks(params.id));
+  }
+
+  setTrackPlayingState(id) {
+    const { dispatch, currentPlaylist } = this.props;
+    return dispatch(setPlayingState(currentPlaylist.id, id, true, 'play'));
+  }
+
+  render() {
+    const {
+      loading,
+      currentPlaylist: { tracks, id }
+    } = this.props;
+
+    if (loading) {
+      return <Loading />;
+    }
+    return (
+      <main className="tracks-page">
+        <section className="tracks-container">
+          <Table data={tracks} startTrack={this.setTrackPlayingState} />
+          <Player playlistId={id} />
+        </section>
+      </main>
+    );
+  }
 }
 
-export default connect()(Playlist);
+const mapStateToProps = state => {
+  const { currentPlaylist, loading } = state.playlists;
+  return {
+    currentPlaylist,
+    loading
+  };
+};
+export default connect(mapStateToProps)(Playlist);
