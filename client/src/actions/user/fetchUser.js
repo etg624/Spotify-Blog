@@ -23,6 +23,7 @@ export const fetchUser = authToken => dispatch => {
     })
     .catch(err => {
       console.log(err);
+      localStorage.removeItem('authToken');
       dispatch(clearAuth());
       dispatch(fetchUserError(err));
     });

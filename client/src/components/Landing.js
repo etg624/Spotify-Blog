@@ -24,7 +24,7 @@ class Landing extends Component {
 
   render() {
     if (this.props.auth.userAuthInfo) {
-      return <Redirect to="/profile" />;
+      return <Redirect to="/playlist/3kdsNze39JEaO6UQT6LZBf/tracks" />;
     }
     return <div>Welcome</div>;
   }

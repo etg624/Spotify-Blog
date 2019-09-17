@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Player from './Player';
 import Loading from './Loading';
 import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
-
+import '../styles/Tracks.css';
 class Tracks extends Component {
   componentDidMount() {
     const {
@@ -17,6 +17,7 @@ class Tracks extends Component {
   render() {
     const {
       loading,
+
       currentPlaylist: { tracks, id }
     } = this.props;
     if (loading) {
@@ -25,14 +26,28 @@ class Tracks extends Component {
 
     const tracksToRender =
       tracks &&
-      tracks.map(track => {
-        return <li key={track.id}>{track.name}</li>;
+      tracks.map((track, index) => {
+        console.log(track);
+        return (
+          <li className="track" key={track.id}>
+            <section className="track-info">
+              <span>{index + 1}</span>
+              <div>
+                {track.name}
+                {track.album.name}
+                {track.artists[0].name}
+              </div>
+            </section>
+          </li>
+        );
       });
     return (
-      <div>
-        {tracksToRender}
-        <Player playlistId={id} />
-      </div>
+      <main className="tracks-page">
+        <section className="tracks-container">
+          <ul className="tracks">{tracksToRender}</ul>
+          <Player playlistId={id} />
+        </section>
+      </main>
     );
   }
 }

@@ -32,7 +32,7 @@ class App extends Component {
 
     this.refreshInterval = setInterval(
       () => dispatch(refreshAccessToken(currentUser.spotifyId)),
-      35000 // 35 seconds
+      60 * 60 * 999 // 59 min 59 seconds
     );
   }
 

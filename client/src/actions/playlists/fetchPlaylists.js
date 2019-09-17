@@ -38,6 +38,7 @@ export const fetchUserPlaylists = spotifyId => (dispatch, getState) => {
       dispatch(fetchUserPlaylistsSuccess(playlists));
     })
     .catch(err => {
+      localStorage.removeItem('authToken');
       dispatch(clearAuth());
       dispatch(fetchUserPlaylistsError(err));
     });
