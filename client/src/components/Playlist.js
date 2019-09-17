@@ -29,6 +29,7 @@ class Playlist extends Component {
   render() {
     const {
       loading,
+      currentPlaylist,
       currentPlaylist: { tracks, id }
     } = this.props;
 
@@ -38,7 +39,12 @@ class Playlist extends Component {
     return (
       <main className="tracks-page">
         <section className="tracks-container">
-          <Table data={tracks} startTrack={this.setTrackPlayingState} />
+          <Table
+            data={tracks}
+            startTrack={this.setTrackPlayingState}
+            currentPlaylist={currentPlaylist}
+            playlistId={id}
+          />
           <Player playlistId={id} />
         </section>
       </main>

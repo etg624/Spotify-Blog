@@ -1,9 +1,8 @@
 import React from 'react';
 import '../styles/Table.css';
 
-function Table({ data, startTrack }) {
+function Table({ data, startTrack, currentPlaylist, playlistId }) {
   function renderTableData() {
-    // console.log(data);
     return (
       data &&
       data.map(({ album, name, artists, id }) => {

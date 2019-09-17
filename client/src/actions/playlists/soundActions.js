@@ -5,20 +5,17 @@ export const startSongRequest = () => ({
   type: START_SONG_REQUEST
 });
 
-export const START_SONG_SUCCESS = 'START_SONG_SUCCESS';
-export const startSongSuccess = () => ({
-  type: START_SONG_SUCCESS
-});
-
 export const START_SONG_ERROR = 'START_SONG_ERROR';
-export const startSongError = playlistId => ({
+export const startSongError = error => ({
   type: START_SONG_ERROR,
-  playlistId
+  error
 });
 
-export const START_PLAYLIST_SUCCESS = 'START_PLAYLIST_SUCCESS';
-export const startPlaylistSuccess = () => ({
-  type: START_PLAYLIST_SUCCESS
+export const SET_PLAYBACK_STATE_SUCCESS = 'SET_PLAYBACK_STATE_SUCCESS';
+export const setPlayBackStateSuccess = (trackId, currentState) => ({
+  type: SET_PLAYBACK_STATE_SUCCESS,
+  trackId,
+  currentState
 });
 
 export const NAVIGATE_PLAYLIST_SUCCESS = 'NAVIGATE_PLAYLIST';
@@ -61,6 +58,9 @@ export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
   };
 
   return fetch(`https://api.spotify.com/v1/me/player/${playingState}`, options)
-    .then(() => dispatch(startPlaylistSuccess()))
-    .catch(err => console.log(err));
+    .then(() => dispatch(setPlayBackStateSuccess(trackId, playingState)))
+    .catch(err => {
+      console.log(err);
+      dispatch(startSongError(err));
+    });
 };
