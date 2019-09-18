@@ -26,7 +26,6 @@ export default function reducer(state = initialState, action) {
     //   };
 
     case FETCH_CURRENT_PLAYBACK_SUCCESS:
-      console.log(action.playbackInfo.is_playing);
       return {
         ...state,
         isPlaying: action.playbackInfo.is_playing,

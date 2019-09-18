@@ -1,0 +1,4 @@
+---------Playlist Component--------------
+update currentTrack when track finishes 
+add sound icon
+

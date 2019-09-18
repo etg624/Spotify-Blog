@@ -1,31 +1,40 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import '../styles/Table.css';
 
 function Table({ tracks, setTrackPlayingState, isPlaying, currentTrack }) {
-  console.log(currentTrack);
   function renderTableData() {
     return (
       tracks &&
       tracks.map(({ album, name, artists, id }) => {
-        const isPlayingStyles = {
-          backgroundColor:
-            currentTrack && currentTrack.name && currentTrack.name === name
-              ? 'rgba(143, 0, 79, 0.7)'
-              : ''
-        };
+        const isPlayingStyles =
+          currentTrack && currentTrack.name && currentTrack.name === name
+            ? {
+                color: 'rgb(55, 173, 128)'
+              }
+            : null;
 
         return (
           <tr
-            style={isPlayingStyles}
             className="tracks-data"
             key={name}
             onDoubleClick={() => {
-              console.log(id);
               setTrackPlayingState(id);
             }}
           >
-            <td></td>
-            <td className="track-title">{name}</td>
+            <td>
+              {currentTrack &&
+              currentTrack.name &&
+              currentTrack.name === name ? (
+                <span>
+                  <FontAwesomeIcon icon={faVolumeUp} style={isPlayingStyles} />
+                </span>
+              ) : null}
+            </td>
+            <td className="track-title" style={isPlayingStyles}>
+              {name}
+            </td>
             <td>{album.name.slice(0, 16)}...</td>
             <td>{artists[0].name}</td>
           </tr>

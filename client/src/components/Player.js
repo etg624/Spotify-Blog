@@ -13,7 +13,7 @@ class Player extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.currentTrack !== this.props.currentTrack) {
-      console.log(this.props.currentTrack, prevProps.currentTrack);
+      console.log(prevProps);
     }
   }
 
@@ -22,6 +22,8 @@ class Player extends Component {
     console.log(currentTrack);
     return (
       <footer>
+        <img src={currentTrack && currentTrack.album.images[1].url} alt="" />
+        <p>{currentTrack && currentTrack.name}</p>
         <button onClick={() => dispatch(navigatePlaylist('previous'))}>
           PREVIOUS
         </button>

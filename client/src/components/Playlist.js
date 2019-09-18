@@ -20,6 +20,10 @@ class Playlist extends Component {
     dispatch(fetchPlaylistTracks(params.id));
   }
 
+  componentDidUpdate(prevProps) {
+    console.log(prevProps);
+  }
+
   setTrackPlayingState(id) {
     const { dispatch, currentPlaylist } = this.props;
     return dispatch(setPlayingState(currentPlaylist.id, id, true, 'play'));
