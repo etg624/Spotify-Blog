@@ -4,7 +4,7 @@ import authReducer from './reducers/authReducer';
 import userReducer from './reducers/userReducer';
 import playlistReducer from './reducers/playlistReducer';
 
-import trackReducer from './reducers/trackReducer';
+import playbackReducer from './reducers/playbackReducer';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -13,8 +13,7 @@ const store = createStore(
     auth: authReducer,
     user: userReducer,
     playlists: playlistReducer,
-
-    track: trackReducer
+    playback: playbackReducer
   }),
   composeEnhancers(applyMiddleware(thunk))
 );

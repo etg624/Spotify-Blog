@@ -1,12 +1,14 @@
-/* .tracks-table-container {
-  height: 400px;
-  overflow: auto;
-} */
+.tracks-table-container {
+  /* height: 400px; */
+  /* overflow: scroll; */
+  width: 80%;
+  margin: 0 auto;
+}
 .tracks-table {
   text-align: left;
   height: 20px;
   overflow: auto;
-  margin: auto;
+  margin: 0 auto;
   background-color: rgba(2, 0, 11, 0.687);
 }
 

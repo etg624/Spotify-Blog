@@ -1,4 +1,5 @@
 import decodeJWT from 'jwt-decode';
+import { fetchCurrentPlayback } from './playbackActions';
 
 export const START_SONG_REQUEST = 'START_SONG_REQUEST';
 export const startSongRequest = () => ({
@@ -34,7 +35,9 @@ export const navigatePlaylist = direction => (dispatch, getState) => {
       Authorization: `Bearer ${accessToken}`,
       'content-type': 'application/json'
     }
-  }).then(() => dispatch(navigatePlaylistSuccess(direction)));
+  })
+    .then(() => dispatch(navigatePlaylistSuccess(direction)))
+    .then(() => dispatch(fetchCurrentPlayback()));
 };
 
 export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
@@ -59,6 +62,7 @@ export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
 
   return fetch(`https://api.spotify.com/v1/me/player/${playingState}`, options)
     .then(() => dispatch(setPlayBackStateSuccess(trackId, playingState)))
+    .then(() => dispatch(fetchCurrentPlayback()))
     .catch(err => {
       console.log(err);
       dispatch(startSongError(err));

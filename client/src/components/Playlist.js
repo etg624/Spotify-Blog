@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Player from './Player';
 import Loading from './Loading';
 import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
 import { setPlayingState } from '../actions/playlists/soundActions';
@@ -30,6 +29,8 @@ class Playlist extends Component {
     const {
       loading,
       currentPlaylist,
+      isPlaying,
+      currentTrack,
       currentPlaylist: { tracks, id }
     } = this.props;
 
@@ -40,23 +41,26 @@ class Playlist extends Component {
       <main className="tracks-page">
         <section className="tracks-container">
           <Table
-            data={tracks}
-            startTrack={this.setTrackPlayingState}
-            currentPlaylist={currentPlaylist}
-            playlistId={id}
+            tracks={tracks}
+            setTrackPlayingState={this.setTrackPlayingState}
+            currentTrack={currentTrack}
+            isPlaying={isPlaying}
           />
-          <Player playlistId={id} />
         </section>
       </main>
     );
   }
 }
 
-const mapStateToProps = state => {
-  const { currentPlaylist, loading } = state.playlists;
+const mapStateToProps = ({
+  playlists: { currentPlaylist, loading },
+  playback: { isPlaying, currentTrack }
+}) => {
   return {
     currentPlaylist,
-    loading
+    loading,
+    isPlaying,
+    currentTrack
   };
 };
 export default connect(mapStateToProps)(Playlist);

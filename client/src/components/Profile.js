@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Player from './Player';
 import { connect } from 'react-redux';
 import PlaylistLink from './PlaylistLink';
 import { fetchUserPlaylists } from '../actions/playlists/fetchPlaylists';
@@ -36,8 +35,6 @@ class Profile extends Component {
     return (
       <main className="profile">
         <ul className="playlists">{playlistsToRender}</ul>
-
-        <Player playlistId={currentPlaylist && currentPlaylist.id} />
       </main>
     );
   }

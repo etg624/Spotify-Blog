@@ -1,17 +1,27 @@
 import React from 'react';
 import '../styles/Table.css';
 
-function Table({ data, startTrack, currentPlaylist, playlistId }) {
+function Table({ tracks, setTrackPlayingState, isPlaying, currentTrack }) {
+  console.log(currentTrack);
   function renderTableData() {
     return (
-      data &&
-      data.map(({ album, name, artists, id }) => {
+      tracks &&
+      tracks.map(({ album, name, artists, id }) => {
+        const isPlayingStyles = {
+          backgroundColor:
+            currentTrack && currentTrack.name && currentTrack.name === name
+              ? 'rgba(143, 0, 79, 0.7)'
+              : ''
+        };
+
         return (
           <tr
+            style={isPlayingStyles}
             className="tracks-data"
             key={name}
             onDoubleClick={() => {
-              startTrack(id);
+              console.log(id);
+              setTrackPlayingState(id);
             }}
           >
             <td></td>

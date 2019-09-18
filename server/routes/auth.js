@@ -23,7 +23,8 @@ router.get(
       'playlist-modify-private',
       'playlist-modify-public',
       'playlist-read-private',
-      'user-modify-playback-state'
+      'user-modify-playback-state',
+      'user-read-playback-state'
     ],
     showDialog: true
   }),

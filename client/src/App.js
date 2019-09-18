@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Header from './components/Header';
 import Landing from './components/Landing';
 import Playlist from './components/Playlist';
+import Player from './components/Player';
 
 import Profile from './components/Profile';
 import { refreshAccessToken } from './actions/auth';
@@ -44,9 +45,10 @@ class App extends Component {
   }
 
   render() {
+    const { loggedIn, currentPlaylist } = this.props;
     return (
       <div className="App">
-        <Header loggedIn={this.props.loggedIn} />
+        <Header loggedIn={loggedIn} />
 
         {/* no exact path in order to match window.location.search */}
         <Route path="/" component={Landing} />
@@ -59,6 +61,7 @@ class App extends Component {
             render={props => <Playlist {...props} />}
           />
         </Switch>
+        <Player playlistId={currentPlaylist.id} />
       </div>
     );
   }
@@ -66,7 +69,8 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   loggedIn: state.auth.userAuthInfo !== null,
-  currentUser: state.auth.userAuthInfo
+  currentUser: state.auth.userAuthInfo,
+  currentPlaylist: state.playlists.currentPlaylist
 });
 
 export default connect(mapStateToProps)(App);
