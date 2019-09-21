@@ -1,6 +1,6 @@
 .tracks-table-container {
-  /* height: 400px; */
-  /* overflow: scroll; */
+  height: 400px;
+  overflow: auto;
   width: 80%;
   margin: 0 auto;
 }
@@ -20,9 +20,14 @@
   padding: 12px;
 }
 
+.tracks-data {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
 .tracks-data:hover {
   background-color: rgb(81, 73, 109);
   cursor: pointer;
+  box-shadow: 0 0px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .tracks-table th {
