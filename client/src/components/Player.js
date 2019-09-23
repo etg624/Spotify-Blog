@@ -11,15 +11,9 @@ class Player extends Component {
     this.props.dispatch(fetchCurrentPlayback());
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.currentTrack !== this.props.currentTrack) {
-      console.log(prevProps);
-    }
-  }
-
   render() {
     const { playlistId, dispatch, currentTrack, isPlaying } = this.props;
-    console.log(currentTrack);
+
     return (
       <footer>
         <img src={currentTrack && currentTrack.album.images[1].url} alt="" />
@@ -32,8 +26,8 @@ class Player extends Component {
             dispatch(
               setPlayingState(
                 playlistId,
-                currentTrack.id,
-                true,
+                currentTrack ? currentTrack.id : null,
+                currentTrack ? true : false,
                 `${isPlaying ? 'pause' : 'play'}`
               )
             )

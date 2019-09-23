@@ -5,6 +5,7 @@ import Loading from './Loading';
 import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
 import { setPlayingState } from '../actions/playlists/soundActions';
 import Table from './Table';
+import requiresLogin from './HOC/requiresLogin';
 
 class Playlist extends Component {
   constructor(props) {
@@ -18,10 +19,6 @@ class Playlist extends Component {
       match: { params }
     } = this.props;
     dispatch(fetchPlaylistTracks(params.id));
-  }
-
-  componentDidUpdate(prevProps) {
-    console.log(prevProps);
   }
 
   setTrackPlayingState(id) {
@@ -67,4 +64,4 @@ const mapStateToProps = ({
     currentTrack
   };
 };
-export default connect(mapStateToProps)(Playlist);
+export default requiresLogin()(connect(mapStateToProps)(Playlist));

@@ -1,10 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { logout } from '../../helpers/logout';
 
 export default () => Component => {
   function RequiresLogin(props) {
-    const { authenticating, loggedIn, error, ...passThroughProps } = props;
+    const {
+      dispatch,
+      authenticating,
+      loggedIn,
+      error,
+      ...passThroughProps
+    } = props;
 
     if (authenticating) {
       return <div>Logging in...</div>;

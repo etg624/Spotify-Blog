@@ -12,24 +12,18 @@ import {
 
 const initialState = {
   currentTrack: null,
-  isPlaying: false
+  isPlaying: false,
+  currentTrackPositionInMilliseconds: 0
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    // case SET_PLAYBACK_STATE_SUCCESS:
-    //   console.log(action);
-    //   return {
-    //     ...state,
-    //     currentTrack: action.trackId,
-    //     isPlaying: action.currentState === 'play' ? true : false
-    //   };
-
     case FETCH_CURRENT_PLAYBACK_SUCCESS:
       return {
         ...state,
         isPlaying: action.playbackInfo.is_playing,
-        currentTrack: action.playbackInfo.item
+        currentTrack: action.playbackInfo.item,
+        currentTrackProgress: action.playbackInfo.progress_ms
       };
     default:
       return state;

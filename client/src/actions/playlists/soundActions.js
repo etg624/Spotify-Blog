@@ -1,19 +1,19 @@
 import decodeJWT from 'jwt-decode';
 import { fetchCurrentPlayback } from './playbackActions';
 
-export const START_SONG_REQUEST = 'START_SONG_REQUEST';
-export const startSongRequest = () => ({
-  type: START_SONG_REQUEST
+export const SET_PLAYBACK_STATE_REQUEST = 'SET_PLAYBACK_STATE_REQUEST';
+export const setPlaybackStateRequest = () => ({
+  type: SET_PLAYBACK_STATE_REQUEST
 });
 
-export const START_SONG_ERROR = 'START_SONG_ERROR';
-export const startSongError = error => ({
-  type: START_SONG_ERROR,
+export const SET_PLAYBACK_STATE_ERROR = 'SET_PLAYBACK_STATE_ERROR';
+export const setPlaybackStateError = error => ({
+  type: SET_PLAYBACK_STATE_ERROR,
   error
 });
 
 export const SET_PLAYBACK_STATE_SUCCESS = 'SET_PLAYBACK_STATE_SUCCESS';
-export const setPlayBackStateSuccess = (trackId, currentState) => ({
+export const setPlaybackStateSuccess = (trackId, currentState) => ({
   type: SET_PLAYBACK_STATE_SUCCESS,
   trackId,
   currentState
@@ -40,11 +40,25 @@ export const navigatePlaylist = direction => (dispatch, getState) => {
     .then(() => dispatch(fetchCurrentPlayback()));
 };
 
+export const GET_CURRENT_TRACK_MILLISECOND_POSITION_SUCCESS =
+  'GET_CURRENT_TRACK_MILLISECOND_POSITION_SUCCESS';
+export const getCurrentTrackMillisecondPositionSuccess = ms => ({
+  type: GET_CURRENT_TRACK_MILLISECOND_POSITION_SUCCESS,
+  ms
+});
+export const getCurrentTrackMillisecondPosition = accessToken => {
+  return fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  })
+    .then(res => res.json())
+    .then(data => JSON.stringify(data.progress_ms));
+};
+
 export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
   dispatch,
   getState
 ) => {
-  dispatch(startSongRequest());
+  dispatch(setPlaybackStateRequest());
   const { authToken } = getState().auth;
   const { accessToken } = decodeJWT(authToken).user;
   const options = {
@@ -56,15 +70,15 @@ export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
     body: JSON.stringify({
       context_uri: `spotify:playlist:${playlistId}`,
       offset: isTrack ? { uri: `spotify:track:${trackId}` } : { position: 0 },
-      position_ms: 0
+      position_ms: getState().playback.currentTrackProgress
     })
   };
 
   return fetch(`https://api.spotify.com/v1/me/player/${playingState}`, options)
-    .then(() => dispatch(setPlayBackStateSuccess(trackId, playingState)))
+    .then(() => dispatch(setPlaybackStateSuccess(trackId, playingState)))
     .then(() => dispatch(fetchCurrentPlayback()))
     .catch(err => {
       console.log(err);
-      dispatch(startSongError(err));
+      dispatch(setPlaybackStateError(err));
     });
 };
