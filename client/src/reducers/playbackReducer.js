@@ -13,7 +13,7 @@ import {
 const initialState = {
   currentTrack: null,
   isPlaying: false,
-  currentTrackPositionInMilliseconds: 0
+  currentTrackProgress: 0
 };
 
 export default function reducer(state = initialState, action) {
