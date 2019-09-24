@@ -41,20 +41,6 @@ export const navigatePlaylist = direction => (dispatch, getState) => {
     .then(() => dispatch(fetchCurrentPlayback()));
 };
 
-export const GET_CURRENT_TRACK_MILLISECOND_POSITION_SUCCESS =
-  'GET_CURRENT_TRACK_MILLISECOND_POSITION_SUCCESS';
-export const getCurrentTrackMillisecondPositionSuccess = ms => ({
-  type: GET_CURRENT_TRACK_MILLISECOND_POSITION_SUCCESS,
-  ms
-});
-export const getCurrentTrackMillisecondPosition = accessToken => {
-  return fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  })
-    .then(res => res.json())
-    .then(data => JSON.stringify(data.progress_ms));
-};
-
 export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
   dispatch,
   getState
@@ -70,8 +56,15 @@ export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
     },
     body: JSON.stringify({
       context_uri: `spotify:playlist:${playlistId}`,
+      //if user clicked a track in the depths of the playlist start from there
+      //otherwise start at the beginning of the playlist
       offset: isTrack ? { uri: `spotify:track:${trackId}` } : { position: 0 },
-      position_ms: getState().playback.currentTrackProgress
+      // if the track is not playing then it is paused and
+      //we need to start where we left off
+      // else its a new track start from 0
+      position_ms: !getState().playback.isPlaying
+        ? getState().playback.currentTrackProgress
+        : 0
     })
   };
 

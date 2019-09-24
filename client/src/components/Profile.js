@@ -15,7 +15,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { playlists, loading, currentPlaylist } = this.props;
+    const { playlists, loading } = this.props;
     if (loading) {
       return <div>Loading</div>;
     }
@@ -41,7 +41,7 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => {
-  const { playlists, loading, currentPlaylist } = state.playlists;
+  const { playlists, loading } = state.playlists;
   return {
     playlists,
     loading,

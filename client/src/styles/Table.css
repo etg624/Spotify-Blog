@@ -1,8 +1,8 @@
 .tracks-table-container {
-  height: 400px;
+  /* height: 400px;
   overflow: auto;
   width: 80%;
-  margin: 0 auto;
+  margin: 0 auto; */
 }
 .tracks-table {
   text-align: left;

@@ -6,28 +6,45 @@ import {
 } from '../actions/playlists/soundActions';
 import { fetchCurrentPlayback } from '../actions/playlists/playbackActions';
 import { connect } from 'react-redux';
-import store from '../store';
 
 class Player extends Component {
   componentDidMount() {
+    //get the current track right away
+    this.props.dispatch(fetchCurrentPlayback());
+  }
+
+  componentDidUpdate(prevProps) {
+    //stop or start the interval that fetches the current playback based on playback state i.e. paused or playing
+    const { isPlaying } = this.props;
+    if (!prevProps.isPlaying && isPlaying) {
+      //playing
+      this.startPlaybackInterval();
+    } else if (prevProps.isPlaying && !isPlaying) {
+      //paused
+      this.stopPlaybackInterval();
+    }
+  }
+
+  componentWillUnmount() {
+    this.stopPlaybackInterval();
+  }
+
+  startPlaybackInterval() {
     this.timer = setInterval(
       () => this.props.dispatch(fetchCurrentPlayback()),
       1000 //fetch the current state of the playback every second
     );
   }
 
-  componentWillUnmount() {
+  stopPlaybackInterval() {
+    if (!this.timer) {
+      return;
+    }
     clearInterval(this.timer);
   }
 
   render() {
-    const {
-      playlistId,
-      dispatch,
-      currentTrack,
-      isPlaying,
-      currentTrackProgress
-    } = this.props;
+    const { playlistId, dispatch, currentTrack, isPlaying } = this.props;
 
     return (
       <footer>
