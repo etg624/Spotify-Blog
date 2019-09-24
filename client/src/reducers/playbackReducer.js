@@ -19,11 +19,12 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_CURRENT_PLAYBACK_SUCCESS:
+      const { is_playing, item, progress_ms } = action.playbackInfo;
       return {
         ...state,
-        isPlaying: action.playbackInfo.is_playing,
-        currentTrack: action.playbackInfo.item,
-        currentTrackProgress: action.playbackInfo.progress_ms
+        isPlaying: is_playing,
+        currentTrack: item,
+        currentTrackProgress: progress_ms
       };
     default:
       return state;

@@ -6,13 +6,28 @@ import {
 } from '../actions/playlists/soundActions';
 import { fetchCurrentPlayback } from '../actions/playlists/playbackActions';
 import { connect } from 'react-redux';
+import store from '../store';
+
 class Player extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchCurrentPlayback());
+    this.timer = setInterval(
+      () => this.props.dispatch(fetchCurrentPlayback()),
+      900
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   render() {
-    const { playlistId, dispatch, currentTrack, isPlaying } = this.props;
+    const {
+      playlistId,
+      dispatch,
+      currentTrack,
+      isPlaying,
+      currentTrackProgress
+    } = this.props;
 
     return (
       <footer>
@@ -42,9 +57,12 @@ class Player extends Component {
   }
 }
 
-const mapStateToProps = ({ playback: { currentTrack, isPlaying } }) => ({
+const mapStateToProps = ({
+  playback: { currentTrack, isPlaying, currentTrackProgress }
+}) => ({
   currentTrack,
-  isPlaying
+  isPlaying,
+  currentTrackProgress
 });
 
 export default requiresLogin()(connect(mapStateToProps)(Player));
