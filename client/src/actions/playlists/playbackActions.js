@@ -1,4 +1,5 @@
 import decodeJWT from 'jwt-decode';
+
 export const FETCH_CURRENT_PLAYBACK_REQUEST = 'FETCH_CURRENT_PLAYBACK_REQUEST';
 export const fetchCurrentPlaybackRequest = () => ({
   type: FETCH_CURRENT_PLAYBACK_REQUEST

@@ -1,4 +1,5 @@
----------Playlist Component--------------
-update currentTrack when track finishes 
-add sound icon
+check if there is an active device
+  - tell user to set device and possibly show possible devices
+  - allow user to get 30sec sample of track so as not to detour them
 
+find out a good way to long poll 

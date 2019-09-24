@@ -1,5 +1,6 @@
 import decodeJWT from 'jwt-decode';
 import { fetchCurrentPlayback } from './playbackActions';
+import { normalizeResponseErrors } from '../../helpers/normalizeResponseErrors';
 
 export const SET_PLAYBACK_STATE_REQUEST = 'SET_PLAYBACK_STATE_REQUEST';
 export const setPlaybackStateRequest = () => ({
@@ -75,6 +76,7 @@ export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
   };
 
   return fetch(`https://api.spotify.com/v1/me/player/${playingState}`, options)
+    .then(res => normalizeResponseErrors(res))
     .then(() => dispatch(setPlaybackStateSuccess(trackId, playingState)))
     .then(() => dispatch(fetchCurrentPlayback()))
     .catch(err => {
