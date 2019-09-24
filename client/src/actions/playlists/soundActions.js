@@ -56,8 +56,6 @@ export const setPlayingState = (playlistId, trackId, playingState) => (
     },
     body: JSON.stringify({
       context_uri: `spotify:playlist:${playlistId}`,
-      //if user clicked a track in the depths of the playlist start from there
-      //otherwise start at the beginning of the playlist
       offset: { uri: `spotify:track:${trackId}` },
       // if the track is not playing then it is paused and
       //we need to start where we left off
