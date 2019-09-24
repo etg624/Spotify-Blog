@@ -12,7 +12,7 @@ class Player extends Component {
   componentDidMount() {
     this.timer = setInterval(
       () => this.props.dispatch(fetchCurrentPlayback()),
-      900
+      1000 //fetch the current state of the playback every second
     );
   }
 

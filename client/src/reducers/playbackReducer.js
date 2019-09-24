@@ -13,7 +13,8 @@ import {
 const initialState = {
   currentTrack: null,
   isPlaying: false,
-  currentTrackProgress: 0
+  currentTrackProgress: 0,
+  error: null
 };
 
 export default function reducer(state = initialState, action) {
@@ -26,6 +27,8 @@ export default function reducer(state = initialState, action) {
         currentTrack: item,
         currentTrackProgress: progress_ms
       };
+    case FETCH_CURRENT_PLAYBACK_ERROR:
+      return { ...state, error: action.error };
     default:
       return state;
   }
