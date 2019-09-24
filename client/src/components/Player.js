@@ -59,7 +59,7 @@ class Player extends Component {
               setPlayingState(
                 playlistId,
                 currentTrack ? currentTrack.id : null,
-                currentTrack ? true : false,
+                // currentTrack ? true : false,
                 `${isPlaying ? 'pause' : 'play'}`
               )
             )

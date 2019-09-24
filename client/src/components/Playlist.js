@@ -23,7 +23,7 @@ class Playlist extends Component {
 
   setTrackPlayingState(id) {
     const { dispatch, currentPlaylist } = this.props;
-    return dispatch(setPlayingState(currentPlaylist.id, id, true, 'play'));
+    return dispatch(setPlayingState(currentPlaylist.id, id, 'play'));
   }
 
   render() {

@@ -41,7 +41,7 @@ export const navigatePlaylist = direction => (dispatch, getState) => {
     .then(() => dispatch(fetchCurrentPlayback()));
 };
 
-export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
+export const setPlayingState = (playlistId, trackId, playingState) => (
   dispatch,
   getState
 ) => {
@@ -58,7 +58,7 @@ export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
       context_uri: `spotify:playlist:${playlistId}`,
       //if user clicked a track in the depths of the playlist start from there
       //otherwise start at the beginning of the playlist
-      offset: isTrack ? { uri: `spotify:track:${trackId}` } : { position: 0 },
+      offset: { uri: `spotify:track:${trackId}` },
       // if the track is not playing then it is paused and
       //we need to start where we left off
       // else its a new track start from 0
@@ -67,7 +67,7 @@ export const setPlayingState = (playlistId, trackId, isTrack, playingState) => (
         : 0
     })
   };
-
+  console.log(playingState);
   return fetch(`https://api.spotify.com/v1/me/player/${playingState}`, options)
     .then(res => normalizeResponseErrors(res))
     .then(() => dispatch(setPlaybackStateSuccess(trackId, playingState)))
