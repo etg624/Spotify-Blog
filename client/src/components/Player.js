@@ -1,4 +1,12 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faStepForward,
+  faStepBackward,
+  faPauseCircle,
+  faPlayCircle
+} from '@fortawesome/free-solid-svg-icons';
+
 import requiresLogin from './HOC/requiresLogin';
 import {
   setPlayingState,
@@ -6,6 +14,7 @@ import {
 } from '../actions/playlists/soundActions';
 import { fetchCurrentPlayback } from '../actions/playlists/playbackActions';
 import { connect } from 'react-redux';
+import '../styles/Player.css';
 
 class Player extends Component {
   componentDidMount() {
@@ -47,28 +56,42 @@ class Player extends Component {
     const { playlistId, dispatch, currentTrack, isPlaying } = this.props;
 
     return (
-      <footer>
-        <img src={currentTrack && currentTrack.album.images[1].url} alt="" />
-        <p>{currentTrack && currentTrack.name}</p>
-        <button onClick={() => dispatch(navigatePlaylist('previous'))}>
-          PREVIOUS
-        </button>
-        <button
-          onClick={() =>
-            dispatch(
-              setPlayingState(
-                playlistId,
-                currentTrack ? currentTrack.id : null,
-                // currentTrack ? true : false,
-                `${isPlaying ? 'pause' : 'play'}`
-              )
-            )
-          }
-        >
-          {isPlaying ? 'Pause' : 'Play'}
-        </button>
+      <footer className="player-container">
+        <section>
+          <span className="player-state-control">
+            <FontAwesomeIcon
+              size="1x"
+              icon={faStepBackward}
+              onClick={() => dispatch(navigatePlaylist('previous'))}
+            />
+          </span>
+          <span className="player-state-control">
+            <FontAwesomeIcon
+              size="2x"
+              onClick={() =>
+                dispatch(
+                  setPlayingState(
+                    playlistId,
+                    currentTrack ? currentTrack.id : null,
+                    // currentTrack ? true : false,
+                    `${isPlaying ? 'pause' : 'play'}`
+                  )
+                )
+              }
+              icon={isPlaying ? faPauseCircle : faPlayCircle}
+            ></FontAwesomeIcon>
+          </span>
 
-        <button onClick={() => dispatch(navigatePlaylist('next'))}>NEXT</button>
+          <span className="player-state-control">
+            <FontAwesomeIcon
+              size="1x"
+              icon={faStepForward}
+              onClick={() => dispatch(navigatePlaylist('next'))}
+            />
+          </span>
+        </section>
+
+        <p>{currentTrack && currentTrack.name}</p>
       </footer>
     );
   }

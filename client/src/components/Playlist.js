@@ -6,6 +6,7 @@ import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
 import { setPlayingState } from '../actions/playlists/soundActions';
 import Table from './Table';
 import requiresLogin from './HOC/requiresLogin';
+import '../styles/Playlist.css';
 
 class Playlist extends Component {
   constructor(props) {

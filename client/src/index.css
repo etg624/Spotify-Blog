@@ -136,4 +136,8 @@ body {
     'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  min-height: 100vh;
+  margin-bottom: 50px;
+  clear: both;
 }
