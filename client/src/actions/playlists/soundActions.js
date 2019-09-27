@@ -24,6 +24,11 @@ export const navigatePlaylistSuccess = direction => ({
   type: NAVIGATE_PLAYLIST_SUCCESS,
   direction
 });
+export const PLAYER_ERROR = 'PLAYER_ERROR';
+export const playerError = error => ({
+  type: PLAYER_ERROR,
+  error
+});
 
 export const navigatePlaylist = direction => (dispatch, getState) => {
   const { accessToken } = getState().auth.userAuthInfo;
@@ -36,6 +41,7 @@ export const navigatePlaylist = direction => (dispatch, getState) => {
     }
   })
     .then(() => dispatch(navigatePlaylistSuccess(direction)))
+    .catch(err => playerError(err))
     .then(() => dispatch(fetchCurrentPlayback()));
 };
 
@@ -70,6 +76,6 @@ export const setPlayingState = (playlistId, trackId, playingState) => (
     .then(() => dispatch(fetchCurrentPlayback()))
     .catch(err => {
       console.log(err);
-      dispatch(setPlaybackStateError(err));
+      dispatch(playerError(err));
     });
 };

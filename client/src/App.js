@@ -6,7 +6,7 @@ import Header from './components/Header';
 import Landing from './components/Landing';
 import Playlist from './components/Playlist';
 import Player from './components/Player';
-
+import CurrentTrackPic from './components/CurrentTrackPic';
 import Profile from './components/Profile';
 import { refreshAuthToken } from './actions/auth';
 
@@ -33,7 +33,7 @@ class App extends Component {
 
     this.refreshInterval = setInterval(
       () => dispatch(refreshAuthToken(currentUser.spotifyId)),
-      1000 * 60 * 15 // 15minutes?
+      1000 * 60 * 5 //5 minutes
     );
   }
 

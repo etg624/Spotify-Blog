@@ -5,17 +5,35 @@
   height: 50px;
   width: 100%;
   background-color: rgb(62, 60, 87);
-}
+  display: flex;
 
+  justify-content: space-between;
+}
 .player-container section {
   height: 100%;
-  display: flex;
-  justify-content: center;
+
   color: rgb(201, 192, 233);
+}
+
+.player-state-controllers {
+  display: flex;
   align-items: center;
+  position: absolute;
+  left: 44%;
 }
 
 .player-state-control {
   cursor: pointer;
   margin: 0 0.8em 0;
+}
+
+.player-track-info {
+  margin-left: -100;
+  line-height: 1.3em;
+  padding: 10px;
+  color: rgba(201, 192, 233, 0.8);
+}
+
+.player-track-info .bold {
+  font-weight: 700;
 }

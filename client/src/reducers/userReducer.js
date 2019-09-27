@@ -1,4 +1,3 @@
-import { REFRESH_AUTH_TOKEN_SUCCESS } from '../actions/auth';
 import {
   FETCH_USER_SUCCESS,
   FETCH_USER_REQUEST,

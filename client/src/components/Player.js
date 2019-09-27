@@ -24,12 +24,17 @@ class Player extends Component {
 
   componentDidUpdate(prevProps) {
     //stop or start the interval that fetches the current playback based on playback state i.e. paused or playing
-    const { isPlaying } = this.props;
+    const { isPlaying, playerError, playbackError } = this.props;
+    if (playbackError) {
+      console.log(playerError);
+      this.stopPlaybackInterval();
+    }
+
     if (!prevProps.isPlaying && isPlaying) {
-      //playing
+      //from paused to playing
       this.startPlaybackInterval();
     } else if (prevProps.isPlaying && !isPlaying) {
-      //paused
+      //from playing to paused
       this.stopPlaybackInterval();
     }
   }
@@ -57,7 +62,11 @@ class Player extends Component {
 
     return (
       <footer className="player-container">
-        <section>
+        <aside className="player-track-info">
+          <p className="bold">{currentTrack && currentTrack.name}</p>
+          <p>{currentTrack && currentTrack.artists[0].name}</p>
+        </aside>
+        <section className="player-state-controllers">
           <span className="player-state-control">
             <FontAwesomeIcon
               size="1x"
@@ -90,19 +99,20 @@ class Player extends Component {
             />
           </span>
         </section>
-
-        <p>{currentTrack && currentTrack.name}</p>
       </footer>
     );
   }
 }
 
 const mapStateToProps = ({
-  playback: { currentTrack, isPlaying, currentTrackProgress }
+  playback: { currentTrack, isPlaying, currentTrackProgress, error },
+  player: { playerError }
 }) => ({
   currentTrack,
   isPlaying,
-  currentTrackProgress
+  currentTrackProgress,
+  playerError,
+  playbackError: error
 });
 
 export default requiresLogin()(connect(mapStateToProps)(Player));

@@ -30,10 +30,9 @@ class Playlist extends Component {
   render() {
     const {
       loading,
-      currentPlaylist,
       isPlaying,
       currentTrack,
-      currentPlaylist: { tracks, id }
+      currentPlaylist: { tracks }
     } = this.props;
 
     if (loading) {

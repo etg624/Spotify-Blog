@@ -1,5 +1,3 @@
-import { normalizeResponseErrors } from '../../helpers/normalizeResponseErrors';
-
 export const FETCH_CURRENT_PLAYBACK_REQUEST = 'FETCH_CURRENT_PLAYBACK_REQUEST';
 export const fetchCurrentPlaybackRequest = () => ({
   type: FETCH_CURRENT_PLAYBACK_REQUEST
@@ -19,15 +17,26 @@ export const fetchCurrentPlaybackError = error => ({
 
 export const fetchCurrentPlayback = () => (dispatch, getState) => {
   const { accessToken } = getState().auth.userAuthInfo;
-
+  //todo fetch the current device first then access the player
+  //if no device try to return message
+  //if there is a device but is not playing ping
+  // PUT https://api.spotify.com/v1/me/player
+  // {
+  //   "device_ids": [
+  //     <deviceId>
+  //   ]
+  // }
   return fetch('https://api.spotify.com/v1/me/player', {
     headers: { Authorization: `Bearer ${accessToken}` }
   })
-    .then(res => normalizeResponseErrors(res))
-    .then(res => res.json())
-    .then(playbackInfo => dispatch(fetchCurrentPlaybackSuccess(playbackInfo)))
+    .then(res => {
+      return res.json();
+    })
+    .then(playbackInfo => {
+      return dispatch(fetchCurrentPlaybackSuccess(playbackInfo));
+    })
     .catch(err => {
       console.log(err);
-      dispatch(fetchCurrentPlaybackError(err));
+      return dispatch(fetchCurrentPlaybackError(err));
     });
 };

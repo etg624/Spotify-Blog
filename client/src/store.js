@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import authReducer from './reducers/authReducer';
 import userReducer from './reducers/userReducer';
 import playlistReducer from './reducers/playlistReducer';
+import playerReducer from './reducers/playerReducer';
 
 import playbackReducer from './reducers/playbackReducer';
 
@@ -13,7 +14,8 @@ const store = createStore(
     auth: authReducer,
     user: userReducer,
     playlists: playlistReducer,
-    playback: playbackReducer
+    playback: playbackReducer,
+    player: playerReducer
   }),
   composeEnhancers(applyMiddleware(thunk))
 );

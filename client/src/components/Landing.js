@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import { storeJWT } from '../actions/auth';
+import { storeJWT, refreshAuthToken } from '../actions/auth';
 
 import { fetchUser } from '../actions/user/fetchUser';
 class Landing extends Component {
@@ -14,9 +14,11 @@ class Landing extends Component {
 
     if (!storedAuthToken && authToken) {
       storeJWT(authToken, dispatch);
+
       return dispatch(fetchUser(authToken));
     }
     if (storedAuthToken) {
+      dispatch(refreshAuthToken());
       storeJWT(storedAuthToken, dispatch);
       return dispatch(fetchUser(storedAuthToken));
     } else return <Redirect to="/" />;
