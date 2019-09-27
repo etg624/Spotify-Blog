@@ -29,19 +29,19 @@ app.use(
 // Parse request body
 app.use(express.json());
 
-app.use(
-  session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 600000, isLoggedIn: false }
-  })
-);
+// app.use(
+//   session({
+//     secret: 'keyboard cat',
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { maxAge: 600000, isLoggedIn: false }
+//   })
+// );
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(spotifyStrategy);
 passport.use(jwtStrategy);
+passport.use(spotifyStrategy);
 
 //Routes
 app.use('/api/auth/spotify', authRouter);

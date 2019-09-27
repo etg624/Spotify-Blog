@@ -1,4 +1,3 @@
-import decodeJWT from 'jwt-decode';
 import { fetchCurrentPlayback } from './playbackActions';
 import { normalizeResponseErrors } from '../../helpers/normalizeResponseErrors';
 
@@ -27,8 +26,7 @@ export const navigatePlaylistSuccess = direction => ({
 });
 
 export const navigatePlaylist = direction => (dispatch, getState) => {
-  const { authToken } = getState().auth;
-  const { accessToken } = decodeJWT(authToken).user;
+  const { accessToken } = getState().auth.userAuthInfo;
 
   return fetch(`https://api.spotify.com/v1/me/player/${direction}`, {
     method: 'POST',
@@ -46,8 +44,8 @@ export const setPlayingState = (playlistId, trackId, playingState) => (
   getState
 ) => {
   dispatch(setPlaybackStateRequest());
-  const { authToken } = getState().auth;
-  const { accessToken } = decodeJWT(authToken).user;
+  const { accessToken } = getState().auth.userAuthInfo;
+
   const options = {
     method: 'PUT',
     headers: {
@@ -65,7 +63,7 @@ export const setPlayingState = (playlistId, trackId, playingState) => (
         : 0
     })
   };
-  console.log(playingState);
+
   return fetch(`https://api.spotify.com/v1/me/player/${playingState}`, options)
     .then(res => normalizeResponseErrors(res))
     .then(() => dispatch(setPlaybackStateSuccess(trackId, playingState)))

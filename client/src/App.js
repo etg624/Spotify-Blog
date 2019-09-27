@@ -8,7 +8,7 @@ import Playlist from './components/Playlist';
 import Player from './components/Player';
 
 import Profile from './components/Profile';
-import { refreshAccessToken } from './actions/auth';
+import { refreshAuthToken } from './actions/auth';
 
 import './App.css';
 
@@ -32,8 +32,8 @@ class App extends Component {
     const { dispatch, currentUser } = this.props;
 
     this.refreshInterval = setInterval(
-      () => dispatch(refreshAccessToken(currentUser.spotifyId)),
-      60 * 60 * 999 // 59 min 59 seconds
+      () => dispatch(refreshAuthToken(currentUser.spotifyId)),
+      1000 * 60 * 15 // 15minutes?
     );
   }
 

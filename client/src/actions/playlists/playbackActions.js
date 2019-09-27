@@ -1,4 +1,3 @@
-import decodeJWT from 'jwt-decode';
 import { normalizeResponseErrors } from '../../helpers/normalizeResponseErrors';
 
 export const FETCH_CURRENT_PLAYBACK_REQUEST = 'FETCH_CURRENT_PLAYBACK_REQUEST';
@@ -19,8 +18,7 @@ export const fetchCurrentPlaybackError = error => ({
 });
 
 export const fetchCurrentPlayback = () => (dispatch, getState) => {
-  const { authToken } = getState().auth;
-  const { accessToken } = decodeJWT(authToken).user;
+  const { accessToken } = getState().auth.userAuthInfo;
 
   return fetch('https://api.spotify.com/v1/me/player', {
     headers: { Authorization: `Bearer ${accessToken}` }

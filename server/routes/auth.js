@@ -1,18 +1,8 @@
 const router = require('express').Router();
 const passport = require('passport');
 const { CLIENT_ORIGIN } = require('../config');
-const jwt = require('jsonwebtoken');
-const { JWT_SECRET, JWT_EXPIRY } = require('../config');
 
-const createAuthToken = user => {
-  const { id, spotifyId, displayName, accessToken } = user;
-  const userInfo = { id, spotifyId, displayName, accessToken };
-  return jwt.sign({ user: userInfo }, JWT_SECRET, {
-    subject: user.id,
-    expiresIn: JWT_EXPIRY
-  });
-};
-
+const createAuthToken = require('../helpers/createAuthToken');
 router.get(
   '/',
   passport.authenticate('spotify', {

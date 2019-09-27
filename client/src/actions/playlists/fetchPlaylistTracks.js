@@ -1,4 +1,3 @@
-import decodeJWT from 'jwt-decode';
 export const FETCH_PLAYLIST_TRACKS_REQUEST = 'FETCH_PLAYLIST_TRACKS_REQUEST';
 export const fetchPlayListTracksRequest = () => ({
   type: FETCH_PLAYLIST_TRACKS_REQUEST
@@ -18,8 +17,7 @@ export const fetchPlayListTracksError = error => ({
 });
 
 export const fetchPlaylistTracks = playlistId => (dispatch, getState) => {
-  const { authToken } = getState().auth;
-  const { accessToken } = decodeJWT(authToken).user;
+  const { accessToken } = getState().auth.userAuthInfo;
 
   dispatch(fetchPlayListTracksRequest());
   return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {

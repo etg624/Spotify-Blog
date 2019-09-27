@@ -2,21 +2,22 @@ const router = require('express').Router();
 const passport = require('passport');
 const request = require('request-promise');
 const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = require('../config');
-const spotifyAuth = passport.authenticate('spotify');
+
+const createAuthToken = require('../helpers/createAuthToken');
 const User = require('../models/User');
-const jwtAuth = passport.authenticate('jwt');
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get('/:spotifyId', (req, res, next) => {
   const { spotifyId } = req.params;
   return User.findOne({ spotifyId }).then(user => {
     if (user) {
-      const { accessToken, spotifyId, displayName } = user;
-      return res.json({ accessToken, spotifyId, displayName });
+      const { spotifyId, displayName } = user;
+      return res.json({ spotifyId, displayName });
     } else return;
   });
 });
 
-router.get('/:spotifyId/refresh', (req, res, next) => {
+router.post('/:spotifyId/refresh', jwtAuth, (req, res, next) => {
   const { spotifyId } = req.params;
   return User.findOne({ spotifyId }).then(user => {
     const options = {
@@ -33,8 +34,13 @@ router.get('/:spotifyId/refresh', (req, res, next) => {
     request
       .post(options, (error, response, body) => {
         const { access_token: accessToken } = body;
-        return res.json({ accessToken });
+        req.user.accessToken = accessToken;
+
+        const authToken = createAuthToken(req.user);
+
+        return res.json({ authToken });
       })
+
       .catch(err => next(err));
   });
 });

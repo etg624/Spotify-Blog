@@ -1,6 +1,6 @@
 import { SPOTIFY_BASE_URL } from '../../config';
 import { clearAuth } from '../auth';
-import decodeJWT from 'jwt-decode';
+
 export const FETCH_USER_PLAYLISTS_REQUEST = 'FETCH_USER_PLAYLISTS_REQUEST';
 export const FETCH_USER_PLAYLISTS_SUCCESS = 'FETCH_USER_PLAYLISTS_SUCCESS';
 export const FETCH_USER_PLAYLISTS_ERROR = 'FETCH_USER_PLAYLISTS_ERROR';
@@ -20,9 +20,7 @@ export const fetchUserPlaylistsError = error => ({
 });
 
 export const fetchUserPlaylists = spotifyId => (dispatch, getState) => {
-  const { authToken } = getState().auth;
-
-  const { accessToken } = decodeJWT(authToken).user;
+  const { accessToken } = getState().auth.userAuthInfo;
 
   dispatch(fetchUserPlaylistsRequest());
 

@@ -2,7 +2,7 @@ import { API_BASE_URL } from '../config';
 import { setItemInLocalStorage } from '../helpers/local-storage';
 import jwtDecode from 'jwt-decode';
 
-export const REFRESH_ACCESS_TOKEN_SUCCESS = 'REFRESH_ACCESS_TOKEN_SUCCESS';
+export const REFRESH_AUTH_TOKEN_SUCCESS = 'REFRESH_AUTH_TOKEN_SUCCESS';
 export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN';
 export const CLEAR_AUTH = 'CLEAR_AUTH';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
@@ -17,9 +17,9 @@ export const authSuccess = userAuthInfo => ({
   userAuthInfo
 });
 export const authError = error => ({ type: AUTH_ERROR, error });
-export const refreshAccessTokenSuccess = accessToken => ({
-  type: REFRESH_ACCESS_TOKEN_SUCCESS,
-  accessToken
+export const refreshAuthTokenSuccess = authToken => ({
+  type: REFRESH_AUTH_TOKEN_SUCCESS,
+  authToken
 });
 
 export const storeJWT = (authToken, dispatch) => {
@@ -34,10 +34,17 @@ export const storeJWT = (authToken, dispatch) => {
   }
 };
 
-export const refreshAccessToken = spotifyId => (dispatch, getState) => {
-  fetch(`${API_BASE_URL}/user/${spotifyId}/refresh`, {})
+export const refreshAuthToken = spotifyId => (dispatch, getState) => {
+  const authToken = localStorage.getItem('authToken');
+
+  fetch(`${API_BASE_URL}/user/${spotifyId}/refresh`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    }
+  })
     .then(res => res.json())
-    .then(({ accessToken }) => {
-      return dispatch(refreshAccessTokenSuccess(accessToken));
+    .then(({ authToken }) => {
+      return storeJWT(authToken, dispatch);
     });
 };

@@ -1,4 +1,4 @@
-import { REFRESH_ACCESS_TOKEN_SUCCESS } from '../actions/auth';
+import { REFRESH_AUTH_TOKEN_SUCCESS } from '../actions/auth';
 import {
   FETCH_USER_SUCCESS,
   FETCH_USER_REQUEST,
@@ -12,11 +12,6 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case REFRESH_ACCESS_TOKEN_SUCCESS:
-      return {
-        ...state,
-        currentUser: { ...state.currentUser, accessToken: action.accessToken }
-      };
     case FETCH_USER_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_USER_SUCCESS:
