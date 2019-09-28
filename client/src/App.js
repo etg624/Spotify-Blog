@@ -45,7 +45,7 @@ class App extends Component {
   }
 
   render() {
-    const { loggedIn, currentPlaylist } = this.props;
+    const { loggedIn, currentPlaylistInView, currentTrack } = this.props;
     return (
       <div className="App">
         <Header loggedIn={loggedIn} />
@@ -61,7 +61,12 @@ class App extends Component {
             render={props => <Playlist {...props} />}
           />
         </Switch>
-        <Player playlistId={currentPlaylist.id} />
+        <footer className="player-container">
+          <CurrentTrackPic
+            imgSrc={currentTrack && currentTrack.album.images[1].url}
+          />
+          <Player playlistId={currentPlaylistInView.id} />
+        </footer>
       </div>
     );
   }
@@ -70,7 +75,8 @@ class App extends Component {
 const mapStateToProps = state => ({
   loggedIn: state.auth.userAuthInfo !== null,
   currentUser: state.auth.userAuthInfo,
-  currentPlaylist: state.playlists.currentPlaylist
+  currentPlaylistInView: state.playlists.currentPlaylistInView,
+  currentTrack: state.playback.currentTrack
 });
 
 export default connect(mapStateToProps)(App);

@@ -15,6 +15,7 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     const {
       dispatch,
       match: { params }
@@ -22,9 +23,9 @@ class Playlist extends Component {
     dispatch(fetchPlaylistTracks(params.id));
   }
 
-  setTrackPlayingState(id) {
-    const { dispatch, currentPlaylist } = this.props;
-    return dispatch(setPlayingState(currentPlaylist.id, id, 'play'));
+  setTrackPlayingState(trackId) {
+    const { dispatch, currentPlaylistInView } = this.props;
+    return dispatch(setPlayingState(currentPlaylistInView.id, trackId, 'play'));
   }
 
   render() {
@@ -32,9 +33,10 @@ class Playlist extends Component {
       loading,
       isPlaying,
       currentTrack,
-      currentPlaylist: { tracks }
+      currentPlaylistInView,
+      currentPlaylistInView: { tracks }
     } = this.props;
-
+    console.log(currentPlaylistInView);
     if (loading) {
       return <Loading />;
     }
@@ -54,11 +56,11 @@ class Playlist extends Component {
 }
 
 const mapStateToProps = ({
-  playlists: { currentPlaylist, loading },
+  playlists: { currentPlaylistInView, loading },
   playback: { isPlaying, currentTrack }
 }) => {
   return {
-    currentPlaylist,
+    currentPlaylistInView,
     loading,
     isPlaying,
     currentTrack

@@ -1,0 +1,8 @@
+.current-track-pic {
+  position: absolute;
+  top: -286%;
+}
+
+.current-track-pic img {
+  width: 47.5%;
+}

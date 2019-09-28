@@ -17,16 +17,8 @@ export const fetchCurrentPlaybackError = error => ({
 
 export const fetchCurrentPlayback = () => (dispatch, getState) => {
   const { accessToken } = getState().auth.userAuthInfo;
-  //todo fetch the current device first then access the player
-  //if no device try to return message
-  //if there is a device but is not playing ping
-  // PUT https://api.spotify.com/v1/me/player
-  // {
-  //   "device_ids": [
-  //     <deviceId>
-  //   ]
-  // }
-  return fetch('https://api.spotify.com/v1/me/player', {
+
+  return fetch('https://api.spotify.com/v1/me/player/', {
     headers: { Authorization: `Bearer ${accessToken}` }
   })
     .then(res => {
@@ -39,4 +31,17 @@ export const fetchCurrentPlayback = () => (dispatch, getState) => {
       console.log(err);
       return dispatch(fetchCurrentPlaybackError(err));
     });
+};
+
+export const setCurrentDevice = deviceId => (dispatch, getState) => {
+  const { accessToken } = getState().auth.userAuthInfo;
+  return fetch('https://api.spotify.com/v1/me/player', {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify({
+      device_ids: [deviceId]
+    })
+  })
+    .then(res => res.json())
+    .then(data => console.log(data));
 };

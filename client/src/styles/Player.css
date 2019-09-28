@@ -15,11 +15,18 @@
   color: rgb(201, 192, 233);
 }
 
+.player-state-message {
+  margin: auto;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
 .player-state-controllers {
   display: flex;
   align-items: center;
   position: absolute;
-  left: 44%;
+  left: 43%;
 }
 
 .player-state-control {
@@ -29,8 +36,8 @@
 
 .player-track-info {
   margin-left: -100;
-  line-height: 1.3em;
-  padding: 10px;
+  line-height: 1.2em;
+  padding: 0.5em;
   color: rgba(201, 192, 233, 0.8);
 }
 

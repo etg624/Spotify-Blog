@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   playlists: [],
-  currentPlaylist: {},
+  currentPlaylistInView: {},
   loading: false,
   error: null,
   modalOpen: false
@@ -41,7 +41,7 @@ export default function reducer(state = initialState, action) {
     case FETCH_PLAYLIST_TRACKS_SUCCESS:
       return {
         ...state,
-        currentPlaylist: {
+        currentPlaylistInView: {
           ...state.currentPlaylist,
           id: action.playlistId,
           tracks: [...action.tracks]

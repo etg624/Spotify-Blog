@@ -7,7 +7,7 @@ const initialState = {
   currentTrack: null,
   isPlaying: false,
   currentTrackProgress: 0,
-  device: null,
+  currentDevice: null,
   error: null
 };
 
@@ -20,10 +20,11 @@ export default function reducer(state = initialState, action) {
         isPlaying: is_playing,
         currentTrack: item,
         currentTrackProgress: progress_ms,
-        device
+        currentDevice: device
       };
     case FETCH_CURRENT_PLAYBACK_ERROR:
       return { ...state, error: action.error };
+
     default:
       return state;
   }

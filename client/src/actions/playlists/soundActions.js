@@ -1,11 +1,6 @@
 import { fetchCurrentPlayback } from './playbackActions';
 import { normalizeResponseErrors } from '../../helpers/normalizeResponseErrors';
 
-export const SET_PLAYBACK_STATE_REQUEST = 'SET_PLAYBACK_STATE_REQUEST';
-export const setPlaybackStateRequest = () => ({
-  type: SET_PLAYBACK_STATE_REQUEST
-});
-
 export const SET_PLAYBACK_STATE_ERROR = 'SET_PLAYBACK_STATE_ERROR';
 export const setPlaybackStateError = error => ({
   type: SET_PLAYBACK_STATE_ERROR,
@@ -13,9 +8,9 @@ export const setPlaybackStateError = error => ({
 });
 
 export const SET_PLAYBACK_STATE_SUCCESS = 'SET_PLAYBACK_STATE_SUCCESS';
-export const setPlaybackStateSuccess = (trackId, currentState) => ({
+export const setPlaybackStateSuccess = (playlistId, currentState) => ({
   type: SET_PLAYBACK_STATE_SUCCESS,
-  trackId,
+  playlistId,
   currentState
 });
 
@@ -49,9 +44,8 @@ export const setPlayingState = (playlistId, trackId, playingState) => (
   dispatch,
   getState
 ) => {
-  dispatch(setPlaybackStateRequest());
   const { accessToken } = getState().auth.userAuthInfo;
-
+  const { currentTrackProgress, isPlaying } = getState().playback;
   const options = {
     method: 'PUT',
     headers: {
@@ -64,18 +58,35 @@ export const setPlayingState = (playlistId, trackId, playingState) => (
       // if the track is not playing then it is paused and
       //we need to start where we left off
       // else its a new track start from 0
-      position_ms: !getState().playback.isPlaying
-        ? getState().playback.currentTrackProgress
-        : 0
+      position_ms: !isPlaying ? currentTrackProgress : 0
     })
   };
 
   return fetch(`https://api.spotify.com/v1/me/player/${playingState}`, options)
     .then(res => normalizeResponseErrors(res))
-    .then(() => dispatch(setPlaybackStateSuccess(trackId, playingState)))
+    .then(() => {
+      return dispatch(setPlaybackStateSuccess(playlistId, playingState));
+    })
     .then(() => dispatch(fetchCurrentPlayback()))
     .catch(err => {
       console.log(err);
       dispatch(playerError(err));
     });
+};
+
+export const FETCH_AVAILABLE_DEVICES_SUCCESS =
+  'FETCH_AVAILABLE_DEVICES_SUCCESS';
+export const fetchAvailableDevicesSuccess = devices => ({
+  type: FETCH_AVAILABLE_DEVICES_SUCCESS,
+  devices
+});
+export const fetchAvailableDevices = () => (dispatch, getState) => {
+  const { accessToken } = getState().auth.userAuthInfo;
+  return fetch('https://api.spotify.com/v1/me/player/devices', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  })
+    .then(res => {
+      return res.json();
+    })
+    .then(({ devices }) => dispatch(fetchAvailableDevicesSuccess(devices)));
 };
