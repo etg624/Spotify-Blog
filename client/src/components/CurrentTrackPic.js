@@ -1,10 +1,10 @@
 import React from 'react';
 import '../styles/CurrentTrackPic.css';
 
-function CurrentTrackPic({ imgSrc }) {
+function CurrentTrackPic({ imgSrc, alt }) {
   return (
     <aside className="current-track-pic">
-      <img src={imgSrc}></img>
+      <img src={imgSrc} alt={alt} />
     </aside>
   );
 }

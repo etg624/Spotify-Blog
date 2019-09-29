@@ -35,13 +35,20 @@ export const fetchCurrentPlayback = () => (dispatch, getState) => {
 
 export const setCurrentDevice = deviceId => (dispatch, getState) => {
   const { accessToken } = getState().auth.userAuthInfo;
-  return fetch('https://api.spotify.com/v1/me/player', {
+
+  const options = {
     method: 'PUT',
-    headers: { Authorization: `Bearer ${accessToken}` },
     body: JSON.stringify({
       device_ids: [deviceId]
-    })
-  })
+    }),
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    }
+  };
+
+  return fetch('https://api.spotify.com/v1/me/player', options)
     .then(res => res.json())
-    .then(data => console.log(data));
+    .then(() => dispatch(fetchCurrentPlayback()))
+    .catch(err => console.log(err));
 };

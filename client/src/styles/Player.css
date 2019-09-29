@@ -12,14 +12,15 @@
 .player-container section {
   height: 100%;
 
-  color: rgb(201, 192, 233);
+  color: rgba(201, 192, 233, 0.7);
 }
 
 .player-state-message {
-  margin: auto;
   font-weight: bold;
   display: flex;
   align-items: center;
+  width: 100%;
+  justify-content: center;
 }
 
 .player-state-controllers {
@@ -34,6 +35,12 @@
   margin: 0 0.8em 0;
 }
 
+.player-state-control:hover {
+  color: rgb(201, 192, 233);
+  transform: scale(1.1);
+  transition-duration: 0.3s;
+}
+
 .player-track-info {
   margin-left: -100;
   line-height: 1.2em;
@@ -43,4 +50,12 @@
 
 .player-track-info .bold {
   font-weight: 700;
+}
+
+.player-current-device {
+  align-self: center;
+  margin-right: 10px;
+  color: rgba(245, 204, 70, 0.947);
+  right: 10px;
+  font-weight: 600;
 }

@@ -63,9 +63,10 @@ class App extends Component {
         </Switch>
         <footer className="player-container">
           <CurrentTrackPic
+            alt={currentTrack && currentTrack.name}
             imgSrc={currentTrack && currentTrack.album.images[1].url}
           />
-          <Player playlistId={currentPlaylistInView.id} />
+          <Player currentPlaylistInView={currentPlaylistInView.id} />
         </footer>
       </div>
     );

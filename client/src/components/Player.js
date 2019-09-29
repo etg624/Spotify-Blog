@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import jwtDecode from 'jwt-decode';
+
 import {
   faStepForward,
   faStepBackward,
@@ -13,36 +13,40 @@ import {
   setPlayingState,
   navigatePlaylist,
   fetchAvailableDevices
-} from '../actions/playlists/soundActions';
+} from '../actions/playlists/soundActions/playerActions';
 import {
   fetchCurrentPlayback,
   setCurrentDevice
-} from '../actions/playlists/playbackActions';
+} from '../actions/playlists/soundActions/playbackActions';
 import { connect } from 'react-redux';
 import '../styles/Player.css';
 
 class Player extends Component {
   componentDidMount() {
     //get the current track right away
-    const { accessToken } = jwtDecode(this.props.authToken).user;
+
     const { dispatch } = this.props;
     dispatch(fetchAvailableDevices());
     dispatch(fetchCurrentPlayback());
   }
   componentDidUpdate(prevProps) {
     //stop or start the interval that fetches the current playback based on playback state i.e. paused or playing
-    const { isPlaying, playerError, playbackError, currentTrack } = this.props;
+    const { isPlaying, playbackError, playerError, currentTrack } = this.props;
 
-    if (!prevProps.isPlaying && isPlaying) {
+    if (!prevProps.isPlaying && isPlaying && currentTrack) {
+      console.log('here 37');
       //from paused to playing
       this.startPlaybackInterval();
     } else if (prevProps.isPlaying && !isPlaying) {
+      console.log('here 41');
       //from playing to paused
       this.stopPlaybackInterval();
     } else if (prevProps.currentTrack && !currentTrack) {
+      console.log('here 45');
       this.stopPlaybackInterval();
-    } else if (playbackError) {
+    } else if (playbackError || playerError) {
       this.stopPlaybackInterval();
+      console.log('here 49');
     }
   }
 
@@ -64,22 +68,39 @@ class Player extends Component {
     clearInterval(this.timer);
   }
 
-  render() {
+  playButton() {
     const {
       currentlyPlayingPlaylist,
+      currentPlaylistInView,
+      dispatch,
+      currentTrack,
+      isPlaying
+    } = this.props;
+
+    dispatch(
+      setPlayingState(
+        currentlyPlayingPlaylist
+          ? currentlyPlayingPlaylist
+          : currentPlaylistInView,
+        currentTrack.id,
+        `${isPlaying ? 'pause' : 'play'}`
+      )
+    );
+  }
+
+  render() {
+    const {
       dispatch,
       currentTrack,
       isPlaying,
       playerError,
-      availableDevices
+      availableDevices,
+      currentDevice,
+      action
     } = this.props;
-    console.log(this.props);
-    return (
+
+    const playerLogic = (
       <>
-        <aside className="player-track-info">
-          <p className="bold">{currentTrack && currentTrack.name}</p>
-          <p>{currentTrack && currentTrack.artists[0].name}</p>
-        </aside>
         {!availableDevices.length ? (
           <section className="player-state-message">
             <>
@@ -93,26 +114,7 @@ class Player extends Component {
           <section className="player-state-message">
             <span>Double click a song to start playing</span>
           </section>
-        ) : playerError && availableDevices.length ? (
-          <section>
-            <span>{playerError.message.split(':')[1]}</span>
-            <div>
-              <select
-                onChange={e => dispatch(setCurrentDevice(e.target.value))}
-              >
-                <option>Select the device you would like to play on</option>
-                {availableDevices.map(device => {
-                  console.log(device);
-                  return (
-                    <option key={device.id} value={device.id}>
-                      {device.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          </section>
-        ) : (
+        ) : currentTrack && !playerError ? (
           <section className="player-state-controllers">
             <span className="player-state-control">
               <FontAwesomeIcon
@@ -125,15 +127,7 @@ class Player extends Component {
             <span className="player-state-control">
               <FontAwesomeIcon
                 size="2x"
-                onClick={() =>
-                  dispatch(
-                    setPlayingState(
-                      currentlyPlayingPlaylist,
-                      currentTrack.id,
-                      `${isPlaying ? 'pause' : 'play'}`
-                    )
-                  )
-                }
+                onClick={() => this.playButton()}
                 icon={isPlaying ? faPauseCircle : faPlayCircle}
               ></FontAwesomeIcon>
             </span>
@@ -146,17 +140,57 @@ class Player extends Component {
               />
             </span>
           </section>
+        ) : playerError && availableDevices.length ? (
+          <section>
+            <span>{playerError.message.split(':')[1]}</span>
+            <div>
+              <select
+                onChange={e => dispatch(setCurrentDevice(e.target.value))}
+              >
+                <option>Select the device you would like to play on</option>
+                {availableDevices.map(device => {
+                  return (
+                    <option key={device.id} value={device.id}>
+                      {device.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          </section>
+        ) : (
+          ''
         )}
+      </>
+    );
+
+    return (
+      <>
+        <aside className="player-track-info">
+          <p className="bold">{currentTrack && currentTrack.name}</p>
+          <p>{currentTrack && currentTrack.artists[0].name}</p>
+        </aside>
+        <>{playerLogic}</>
+        <aside className="player-current-device">
+          Playing on {currentDevice && currentDevice.name}
+        </aside>
       </>
     );
   }
 }
 
 const mapStateToProps = ({
-  playback: { currentTrack, isPlaying, currentTrackProgress, error },
-  player: { playerError, availableDevices, currentlyPlayingPlaylist },
+  playback: {
+    currentTrack,
+    isPlaying,
+    currentTrackProgress,
+    error,
+    currentDevice
+  },
+  player: { playerError, availableDevices, currentlyPlayingPlaylist, action },
   auth: { authToken }
 }) => ({
+  currentDevice,
   currentlyPlayingPlaylist,
   currentTrack,
   isPlaying,
@@ -164,7 +198,8 @@ const mapStateToProps = ({
   playerError,
   playbackError: error,
   authToken,
-  availableDevices
+  availableDevices,
+  action
 });
 
 export default requiresLogin()(connect(mapStateToProps)(Player));

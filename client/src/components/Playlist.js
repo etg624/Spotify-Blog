@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Loading from './Loading';
 import { fetchPlaylistTracks } from '../actions/playlists/fetchPlaylistTracks';
-import { setPlayingState } from '../actions/playlists/soundActions';
+import { setPlayingState } from '../actions/playlists/soundActions/playerActions';
 import Table from './Table';
 import requiresLogin from './HOC/requiresLogin';
 import '../styles/Playlist.css';
@@ -15,7 +15,6 @@ class Playlist extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const {
       dispatch,
       match: { params }
@@ -33,10 +32,9 @@ class Playlist extends Component {
       loading,
       isPlaying,
       currentTrack,
-      currentPlaylistInView,
       currentPlaylistInView: { tracks }
     } = this.props;
-    console.log(currentPlaylistInView);
+
     if (loading) {
       return <Loading />;
     }

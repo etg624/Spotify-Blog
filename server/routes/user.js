@@ -33,12 +33,17 @@ router.post('/:spotifyId/refresh', jwtAuth, (req, res, next) => {
 
     request
       .post(options, (error, response, body) => {
-        const { access_token: accessToken } = body;
-        req.user.accessToken = accessToken;
+        console.log(error);
+        if (body) {
+          const { access_token: accessToken } = body;
+          req.user.accessToken = accessToken;
 
-        const authToken = createAuthToken(req.user);
+          const authToken = createAuthToken(req.user);
 
-        return res.json({ authToken });
+          return res.json({ authToken });
+        }
+
+        res.redirect('/');
       })
 
       .catch(err => next(err));

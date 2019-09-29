@@ -1,5 +1,5 @@
 import { fetchCurrentPlayback } from './playbackActions';
-import { normalizeResponseErrors } from '../../helpers/normalizeResponseErrors';
+import { normalizeResponseErrors } from '../../../helpers/normalizeResponseErrors';
 
 export const SET_PLAYBACK_STATE_ERROR = 'SET_PLAYBACK_STATE_ERROR';
 export const setPlaybackStateError = error => ({
@@ -88,5 +88,8 @@ export const fetchAvailableDevices = () => (dispatch, getState) => {
     .then(res => {
       return res.json();
     })
-    .then(({ devices }) => dispatch(fetchAvailableDevicesSuccess(devices)));
+    .then(({ devices }) => dispatch(fetchAvailableDevicesSuccess(devices)))
+    .catch(err => {
+      return dispatch(playerError(err));
+    });
 };
