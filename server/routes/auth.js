@@ -26,9 +26,12 @@ router.get(
 
 router.get(
   '/callback',
-  passport.authenticate('spotify', { failureRedirect: '/login' }),
+  passport.authenticate('spotify', {
+    failureRedirect: `${CLIENT_ORIGIN}`,
+    failureFlash: true
+  }),
   function(req, res) {
-    // Successful authentication, redirect home.
+    // Successful authentication, redirect to client home.
     const { spotifyId } = req.user;
     const authToken = createAuthToken(req.user);
 

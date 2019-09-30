@@ -61,13 +61,17 @@ class App extends Component {
             render={props => <Playlist {...props} />}
           />
         </Switch>
-        <footer className="player-container">
-          <CurrentTrackPic
-            alt={currentTrack && currentTrack.name}
-            imgSrc={currentTrack && currentTrack.album.images[1].url}
-          />
-          <Player currentPlaylistInView={currentPlaylistInView.id} />
-        </footer>
+        {loggedIn ? (
+          <footer className="player-container">
+            <CurrentTrackPic
+              alt={currentTrack && currentTrack.name}
+              imgSrc={currentTrack && currentTrack.album.images[1].url}
+            />
+            <Player currentPlaylistInView={currentPlaylistInView.id} />
+          </footer>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

@@ -1,7 +1,11 @@
 const router = require('express').Router();
 const passport = require('passport');
 const request = require('request-promise');
-const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = require('../config');
+const {
+  SPOTIFY_CLIENT_ID,
+  SPOTIFY_CLIENT_SECRET,
+  CLIENT_ORIGIN
+} = require('../config');
 
 const createAuthToken = require('../helpers/createAuthToken');
 const User = require('../models/User');
@@ -30,23 +34,25 @@ router.post('/:spotifyId/refresh', jwtAuth, (req, res, next) => {
       },
       json: true
     };
+    if (user) {
+      request
+        .post(options, (error, response, body) => {
+          if (body) {
+            const { access_token: accessToken } = body;
+            req.user.accessToken = accessToken;
 
-    request
-      .post(options, (error, response, body) => {
-        console.log(error);
-        if (body) {
-          const { access_token: accessToken } = body;
-          req.user.accessToken = accessToken;
+            const authToken = createAuthToken(req.user);
 
-          const authToken = createAuthToken(req.user);
+            return res.json({ authToken });
+          }
 
-          return res.json({ authToken });
-        }
+          res.redirect('/');
+        })
 
-        res.redirect('/');
-      })
-
-      .catch(err => next(err));
+        .catch(err => next(err));
+    } else {
+      res.redirect(`${CLIENT_ORIGIN}/`);
+    }
   });
 });
 

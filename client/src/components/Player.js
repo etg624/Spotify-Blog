@@ -87,7 +87,6 @@ class Player extends Component {
       )
     );
   }
-
   render() {
     const {
       dispatch,
@@ -171,9 +170,14 @@ class Player extends Component {
           <p>{currentTrack && currentTrack.artists[0].name}</p>
         </aside>
         <>{playerLogic}</>
-        <aside className="player-current-device">
-          Playing on {currentDevice && currentDevice.name}
-        </aside>
+
+        {availableDevices.length && currentDevice ? (
+          <aside className="player-current-device">
+            Playing on {currentDevice && currentDevice.name}
+          </aside>
+        ) : (
+          ''
+        )}
       </>
     );
   }

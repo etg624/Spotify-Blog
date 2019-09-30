@@ -2,20 +2,20 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   text-align: center;
-  justify-items: center;
+
   grid-gap: 30px;
 }
 
 .playlist-item-img-container {
   padding: 10px;
-  width: 80%;
+
   margin: 0 auto;
 }
 .playlist-item-img {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   width: 100%;
-  border-radius: 30px;
+  border-radius: 15px;
 }
 .playlist-item-img:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
