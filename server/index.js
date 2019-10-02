@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
+const path = require('path');
 
 const jwtStrategy = require('./passport/jwt-strategy');
 const spotifyStrategy = require('./passport/spotify-strategy');
@@ -13,6 +14,9 @@ const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db/mongoose');
 
 const app = express();
+
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
