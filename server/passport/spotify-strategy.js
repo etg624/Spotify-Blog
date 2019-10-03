@@ -23,7 +23,7 @@ const spotifyStrategy = new SpotifyStrategy(
     const { displayName, id } = profile;
     const newUser = { displayName, spotifyId: id, accessToken, refreshToken };
     console.log('HEERREEEE 25', newUser);
-    return User.findOneAndUpdate({ spotifyId: id }, { accessToken })
+    return User.find({ spotifyId: id })
       .then(user => {
         console.log('HEERREEEE 28', newUser);
         if (!user) {
@@ -32,7 +32,9 @@ const spotifyStrategy = new SpotifyStrategy(
             .then(user => done(null, user))
             .catch(err => done(err));
         } else {
-          return done(null, user);
+          return User.update({ spotifyId: id }, { accessToken }).then(user =>
+            done(null, user)
+          );
         }
       })
       .catch(err => done(err));
