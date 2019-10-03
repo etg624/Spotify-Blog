@@ -10,8 +10,7 @@ function dbConnect(url = DATABASE_URL) {
     .connect(url, {
       useNewUrlParser: true,
       useCreateIndex: true,
-      useFindAndModify: false,
-      bufferMaxEntries: 0 // Disable node driver's buffering as well
+      useFindAndModify: false
     })
     .catch(err => {
       err.message = 'Mongoose failed to connect';
