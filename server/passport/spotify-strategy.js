@@ -22,26 +22,17 @@ const spotifyStrategy = new SpotifyStrategy(
   function(accessToken, refreshToken, expires_in, profile, done) {
     const { displayName, id } = profile;
     const newUser = { displayName, spotifyId: id, accessToken, refreshToken };
-    process.nextTick(() => {
-      console.log('heereeeeee');
-      User.find({ spotifyId: id }).then(user => console.log(user));
-
-      return User.find({ spotifyId: id })
-        .then(user => {
-          console.log('HEERREEEE 28', newUser);
-          if (!user) {
-            console.log('HEERREEEE 30', newUser);
-            return User.create(newUser)
-              .then(user => done(null, user))
-              .catch(err => done(err));
-          } else {
-            return User.update({ spotifyId: id }, { accessToken }).then(user =>
-              done(null, user)
-            );
-          }
-        })
-        .catch(err => done(err));
-    });
+    return User.findOneAndUpdate({ spotifyId: id }, { accessToken })
+      .then(user => {
+        if (!user) {
+          return User.create(newUser)
+            .then(user => done(null, user))
+            .catch(err => done(err));
+        } else {
+          return done(null, user);
+        }
+      })
+      .catch(err => done(err));
   }
 );
 
