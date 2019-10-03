@@ -23,7 +23,8 @@ const spotifyStrategy = new SpotifyStrategy(
     const { displayName, id } = profile;
     const newUser = { displayName, spotifyId: id, accessToken, refreshToken };
     process.nextTick(() => {
-      User.find({ spotifyId: id })
+      console.log('heereeeeee', newUser);
+      return User.find({ spotifyId: id })
         .then(user => {
           console.log('HEERREEEE 28', newUser);
           if (!user) {
