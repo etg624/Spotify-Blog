@@ -14,8 +14,8 @@ const spotifyStrategy = new SpotifyStrategy(
     clientID: SPOTIFY_CLIENT_ID,
     clientSecret: SPOTIFY_CLIENT_SECRET,
     callbackURL:
-      'https://spotify-blog-backend.herokuapp.com/api/auth/spotify/callback' ||
-      'http://localhost:8080/api/auth/spotify/callback'
+      'http://localhost:8080/api/auth/spotify/callback' ||
+      'https://spotify-blog-backend.herokuapp.com/api/auth/spotify/callback'
   },
   function(accessToken, refreshToken, expires_in, profile, done) {
     const { displayName, id } = profile;
