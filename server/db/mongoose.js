@@ -10,13 +10,34 @@ function dbConnect(url = DATABASE_URL) {
     .connect(url, {
       useNewUrlParser: true,
       useCreateIndex: true,
-      useFindAndModify: false
+      useFindAndModify: false,
+      bufferMaxEntries: 0 // Disable node driver's buffering as well
     })
     .catch(err => {
       err.message = 'Mongoose failed to connect';
       return err;
     });
 }
+
+mongoose.connection.on('connected', () => {
+  console.log('CONNECT TO MONGOOSE');
+});
+
+mongoose.connection.on('reconnected', () => {
+  console.log('Connection Reestablished');
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('Connection Disconnected');
+});
+
+mongoose.connection.on('close', () => {
+  console.log('Connection Closed');
+});
+
+mongoose.connection.on('error', error => {
+  console.log('ERROR: ' + error);
+});
 
 function dbDisconnect() {
   return mongoose.disconnect();
