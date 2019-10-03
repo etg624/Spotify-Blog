@@ -80,6 +80,7 @@ function runServer(port = PORT) {
 }
 
 if (require.main === module) {
+  console.log('CONNECTED');
   dbConnect();
   runServer();
 }
