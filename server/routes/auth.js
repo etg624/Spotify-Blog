@@ -34,7 +34,7 @@ router.get(
     // Successful authentication, redirect to client home.
     const { spotifyId } = req.user;
     const authToken = createAuthToken(req.user);
-
+    console.log('IN AUTH', authToken);
     res.redirect(
       `${CLIENT_ORIGIN}/profile?user=${spotifyId}&authToken=${authToken}`
     );
