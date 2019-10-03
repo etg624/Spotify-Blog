@@ -34,19 +34,15 @@ class Player extends Component {
     const { isPlaying, playbackError, playerError, currentTrack } = this.props;
 
     if (!prevProps.isPlaying && isPlaying && currentTrack) {
-      console.log('here 37');
       //from paused to playing
       this.startPlaybackInterval();
     } else if (prevProps.isPlaying && !isPlaying) {
-      console.log('here 41');
       //from playing to paused
       this.stopPlaybackInterval();
     } else if (prevProps.currentTrack && !currentTrack) {
-      console.log('here 45');
       this.stopPlaybackInterval();
     } else if (playbackError || playerError) {
       this.stopPlaybackInterval();
-      console.log('here 49');
     }
   }
 

@@ -3,7 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import '../styles/Table.css';
 
-function Table({ tracks, setTrackPlayingState, isPlaying, currentTrack }) {
+function Table({
+  tracks,
+  setTrackPlayingState,
+
+  currentTrack
+}) {
   function renderTableData() {
     return (
       tracks &&
@@ -18,7 +23,7 @@ function Table({ tracks, setTrackPlayingState, isPlaying, currentTrack }) {
         return (
           <tr
             className="tracks-data"
-            key={name}
+            key={name + index}
             onDoubleClick={() => {
               setTrackPlayingState(id);
             }}

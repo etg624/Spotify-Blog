@@ -32,6 +32,7 @@ class Playlist extends Component {
       loading,
       isPlaying,
       currentTrack,
+
       currentPlaylistInView: { tracks }
     } = this.props;
 
