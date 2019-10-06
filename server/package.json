@@ -19,6 +19,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "deploy-server": "cd ../../spotify-blog && git subtree push --prefix server heroku-backend master",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku": "node index.js"

@@ -19,6 +19,7 @@
     "socket.io": "^2.3.0"
   },
   "scripts": {
+    "deploy-client": "cd ../../spotify-blog && git subtree push --prefix client heroku-client master",
     "heroku-postbuild": "npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",
