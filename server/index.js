@@ -4,10 +4,6 @@ const morgan = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
 const path = require('path');
-const {
-  keepClientAwake,
-  keepServerAwake
-} = require('./helpers/wakeUpHerokuApps');
 
 const jwtStrategy = require('./passport/jwt-strategy');
 const spotifyStrategy = require('./passport/spotify-strategy');
@@ -33,9 +29,6 @@ app.use(
     origin: '*'
   })
 );
-
-app.use(keepClientAwake());
-app.use(keepServerAwake());
 
 // Parse request body
 app.use(express.json());
