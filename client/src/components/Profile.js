@@ -24,7 +24,15 @@ class Profile extends Component {
         const { name, images, id } = playlist;
         return (
           <li key={id} className="playlist-item">
-            <PlaylistLink name={name} image={images[0].url} playlistId={id} />
+            <PlaylistLink
+              name={name}
+              image={
+                images.length
+                  ? images[0].url
+                  : require('../assets/placeholder.png')
+              }
+              playlistId={id}
+            />
           </li>
         );
       })
